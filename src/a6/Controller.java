@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.util.Duration;
 
 public class Controller {
@@ -16,11 +17,39 @@ public class Controller {
 	CritterWorld cw;
 	Label critterLabel;
 	Button b1;
-	public Controller(View v, CritterWorld cw1){
+	TextField t;
+	public Controller(View v){
 		this.v = v;
 		numSteps = 0;
-		cw=cw1;
+		createWorld();
 		setWorldSteps();
+	}
+	
+	void createWorld(){
+		Button b = new Button("Load World");
+		t = new TextField();
+		Button b2 = new Button("Load Random World");
+		v.getVBox().getChildren().add(b);
+		v.getVBox().getChildren().add(t);
+		v.getVBox().getChildren().add(b2);
+		
+		b2.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+            public void handle(ActionEvent _) {
+				cw = new CritterWorld();
+            }
+        });
+		
+		b.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+            public void handle(ActionEvent _) {
+				if(t.getText()!= null) cw = new CritterWorld(t.getText());
+				else{
+					Label warning = new Label("Please supply text");
+					//add to view
+				}
+            }
+        });
 	}
 	
 	void setWorldSteps(){
@@ -33,9 +62,13 @@ public class Controller {
 		v.getVBox().getChildren().add(stepLabel);
 		v.getVBox().getChildren().add(critterLabel);
 		b.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
+			@Override
             public void handle(ActionEvent _) {
-                step();
+				if (cw != null) step();
+				else{
+					Label warning = new Label("Please load a world");
+					//add to view
+				}
             }
         });
 		timeline = new Timeline(new KeyFrame(Duration.millis(1000), 

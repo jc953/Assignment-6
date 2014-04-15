@@ -9,7 +9,6 @@ import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-	private CritterWorld cw;
 	private View v;
 	private Controller c;
 
@@ -20,9 +19,9 @@ public class Main extends Application {
 	@Override
 	public void start(Stage s) throws Exception {
 		Constants.read("src/constants.txt");
-		cw = new CritterWorld("src/world.txt");
 		v = new View(s);
-		c = new Controller(v, cw);
+		c = new Controller(v);
 		s.show();
 	}
+	
 }
