@@ -1,31 +1,28 @@
 package a6;
 
+import java.util.ArrayList;
+
 import a5.Constants;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
+import a5.CritterWorld;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 
 public class View {
 	private Group g;
 	private final Pane world;
 	private Pane vbox;
+	private ArrayList<HexPolygon> hexes;
 	private int width = 1200;
 	private int height = 900;
 	private int hL = 60;
 	private double hA = 30*Math.pow(3, 0.5);
+	private CritterWorld cw;
 
 	public View(Stage s) {
 		g = new Group();
@@ -33,7 +30,9 @@ public class View {
 		s.setScene(scene);
 		s.setWidth(width);
 		s.setHeight(height);
-
+		hexes = new ArrayList<HexPolygon>();
+		cw = new CritterWorld();
+		
 		BorderPane border = new BorderPane();
 		world = new Pane();
 		world.setPrefWidth(Constants.MAX_COLUMN*hL*3/2 + hL/2);
@@ -48,10 +47,12 @@ public class View {
 					y = j*hA*2;
 				}
 				HexPolygon p = new HexPolygon(hL/2+x, y, hL*3/2+x, y, hL*2+x, hA+y,
-						hL*3/2+x, hA*2+y, hL/2+x, hA*2+y, x, hA+y, i, Constants.MAX_ARRAY_ROW-j-1);
+						hL*3/2+x, hA*2+y, hL/2+x, hA*2+y, x, hA+y, i, Constants.MAX_ARRAY_ROW-j-1, cw);
 				p.setStroke(Color.BLACK);
 				p.setFill(Color.ANTIQUEWHITE);
 				world.getChildren().add(p);
+				hexes.add(p);
+				p.draw();
 			}
 		}
 		ScrollPane sp = new ScrollPane();

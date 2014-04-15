@@ -1,18 +1,22 @@
 package a6;
 
+import a5.CritterWorld;
 import javafx.event.EventHandler;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Polygon;
 
 public class HexPolygon extends Polygon {
 	int column, row, arrRow;
+	CritterWorld cw;
 	
 	public HexPolygon(double a, double b, double c, double d, double e, double f, 
-			double g, double h, double i, double j, double k, double l, int col, int row){
+			double g, double h, double i, double j, double k, double l, int col, int row, CritterWorld cw){
 		super(a, b, c, d, e, f, g, h, i, j, k, l);
 		column = col;
 		this.arrRow = row;
 		this.row = arrRow + (col+1)/2;
+		this.cw = cw;
 		setupEventHandlers();
 	}
 	
@@ -28,5 +32,12 @@ public class HexPolygon extends Polygon {
 			}
 			
 		});
+	}
+	
+	public void draw(){
+		System.out.println(cw.hexes[column][arrRow].getWorldInfo());
+		if (cw.hexes[column][arrRow].rock){
+			Image image = new Image("src/rock.png");
+		}
 	}
 }
