@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 	private CritterWorld cw;
-	private View v;
+	private View2 v;
 	private Controller c;
 
 	public static void main(String[] args) {
@@ -16,7 +16,7 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage s) throws Exception {
-		v = new View(s);
+		v = new View2(s);
 		s.show();
 	}
 }
