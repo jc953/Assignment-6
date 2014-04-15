@@ -7,6 +7,8 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 public class Controller {
@@ -18,11 +20,14 @@ public class Controller {
 	Label critterLabel;
 	Button b1;
 	TextField t;
+	TextField t1;
+	TextField t2;
 	public Controller(View v){
 		this.v = v;
 		numSteps = 0;
 		createWorld();
 		setWorldSteps();
+		createCritters();
 	}
 	
 	void createWorld(){
@@ -103,6 +108,36 @@ public class Controller {
         numSteps++;
         stepLabel.setText("Steps Advanced: " + numSteps);
         critterLabel.setText("Critters Alive: " + cw.critters.size());
+	}
+	
+	void createCritters(){
+		Button b = new Button("Load");
+		t1 = new TextField();
+		Label l = new Label("Critters from file:");
+		t2 = new TextField();
+		v.getVBox().getChildren().add(b);
+		v.getVBox().getChildren().add(t1);
+		v.getVBox().getChildren().add(l);
+		v.getVBox().getChildren().add(t2);
+		
+		b.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+            public void handle(ActionEvent _) {
+				if(t1.getText()!= null && t2.getText()!= null){
+					for(int i=0;i<Integer.parseInt(t1.getText());i++){
+						cw.addRandomCritter(t2.getText());
+					}
+					critterLabel.setText("Critters Alive: " + cw.critters.size());
+				}
+				else{
+					StackPane warning = new StackPane();
+					warning.setPrefSize(400,400);
+					v.getGroup().getChildren().add(warning);
+					//add to view
+					//also need to deal with parseInt error
+				}
+            }
+        });
 	}
 
 }
