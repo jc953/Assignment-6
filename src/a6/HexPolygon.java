@@ -23,7 +23,6 @@ public class HexPolygon extends Polygon {
 		setStroke(Color.BLACK);
 		setFill(Color.ANTIQUEWHITE);
 		setupEventHandlers();
-		draw();
 	}
 	
 	private void setupEventHandlers(){
@@ -47,6 +46,8 @@ public class HexPolygon extends Polygon {
 		} else if (cw.hexes[column][arrRow].critter != null){
 			Image img = new Image("file:src/critter.png");
 			setFill(new ImagePattern(img));
+		} else {
+			setFill(Color.ANTIQUEWHITE);
 		}
 	}	
 }

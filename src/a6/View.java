@@ -31,7 +31,7 @@ public class View {
 		s.setWidth(width);
 		s.setHeight(height);
 		hexes = new ArrayList<HexPolygon>();
-		cw = new CritterWorld();
+		cw = new CritterWorld(false);
 		
 		BorderPane border = new BorderPane();
 		world = new Pane();
@@ -59,6 +59,12 @@ public class View {
 		border.setLeft(sp);
 		border.setRight(vbox);
 		g.getChildren().add(border);
+	}
+	
+	public void update(){
+		for (HexPolygon h : hexes){
+			h.draw();
+		}
 	}
 
 	public Group getGroup() {
