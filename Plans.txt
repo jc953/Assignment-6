@@ -1,0 +1,3 @@
+Each Hex is a Pane.
+
+Then have a big pane on the right with all the information and buttons.
