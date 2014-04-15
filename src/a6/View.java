@@ -22,7 +22,7 @@ public class View {
 		p.setFill(Color.ALICEBLUE);
 		pane.getChildren().add(p);
 		VBox vbox = new VBox();
-		vbox.getChildren().add(new Button("j"));
+		vbox.getChildren().add(new Button("step"));
 		border.setLeft(pane);
 		border.setRight(vbox);
 		g.getChildren().add(border);
