@@ -5,6 +5,7 @@ import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polygon;
 
@@ -19,7 +20,10 @@ public class HexPolygon extends Polygon {
 		this.arrRow = row;
 		this.row = arrRow + (col+1)/2;
 		this.cw = cw;
+		setStroke(Color.BLACK);
+		setFill(Color.ANTIQUEWHITE);
 		setupEventHandlers();
+		draw();
 	}
 	
 	private void setupEventHandlers(){
@@ -29,7 +33,7 @@ public class HexPolygon extends Polygon {
 			public void handle(MouseEvent e) {
 				System.out.println(column);
 				System.out.println(row);
-				
+				System.out.println(cw.hexes[column][arrRow].rock);
 				
 			}
 			
@@ -37,12 +41,12 @@ public class HexPolygon extends Polygon {
 	}
 	
 	public void draw(){
-		System.out.println(cw.hexes[column][arrRow].getWorldInfo());
 		if (cw.hexes[column][arrRow].rock){
 			Image img = new Image("file:src/rock.png");
-			ImageView imgView = new ImageView(img);
 			setFill(new ImagePattern(img));
-			
+		} else if (cw.hexes[column][arrRow].critter != null){
+			Image img = new Image("file:src/critter.png");
+			setFill(new ImagePattern(img));
 		}
-	}
+	}	
 }

@@ -48,11 +48,8 @@ public class View {
 				}
 				HexPolygon p = new HexPolygon(hL/2+x, y, hL*3/2+x, y, hL*2+x, hA+y,
 						hL*3/2+x, hA*2+y, hL/2+x, hA*2+y, x, hA+y, i, Constants.MAX_ARRAY_ROW-j-1, cw);
-				p.setStroke(Color.BLACK);
-				p.setFill(Color.ANTIQUEWHITE);
 				world.getChildren().add(p);
 				hexes.add(p);
-				p.draw();
 			}
 		}
 		ScrollPane sp = new ScrollPane();
