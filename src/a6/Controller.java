@@ -22,6 +22,7 @@ public class Controller {
 	TextField t;
 	TextField t1;
 	TextField t2;
+	StackPane warning;
 	public Controller(View v){
 		this.v = v;
 		numSteps = 0;
@@ -130,9 +131,19 @@ public class Controller {
 					critterLabel.setText("Critters Alive: " + cw.critters.size());
 				}
 				else{
-					StackPane warning = new StackPane();
+					warning = new StackPane();
 					warning.setPrefSize(400,400);
+					Button ok = new Button("Ok");
+					Label warn = new Label("Please Supply Text!");
+					warning.getChildren().add(ok);
+					warning.getChildren().add(warn);
 					v.getGroup().getChildren().add(warning);
+					ok.setOnAction(new EventHandler<ActionEvent>(){
+						@Override
+						public void handle(ActionEvent _){
+							v.getGroup().getChildren().remove(warning);
+						}
+					});
 					//add to view
 					//also need to deal with parseInt error
 				}
