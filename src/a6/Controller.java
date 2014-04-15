@@ -10,6 +10,7 @@ import javafx.util.Duration;
 
 public class Controller {
 	Label stepLabel;
+	Timeline timeline;
 	int numSteps;
 	View v;
 	CritterWorld cw;
@@ -37,22 +38,22 @@ public class Controller {
                 step();
             }
         });
+		timeline = new Timeline(new KeyFrame(Duration.millis(1000), 
+				new EventHandler<ActionEvent>(){
+				
+				@Override
+				public void handle(ActionEvent arg0){
+					if (b1.getText() == "Stop Stepping"){
+						step();
+					}
+				}
+		}));
 		b1.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent _){
-				Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000), 
-						new EventHandler<ActionEvent>(){
-						
-						@Override
-						public void handle(ActionEvent arg0){
-							if (b1.getText() == "Stop Stepping"){
-								step();
-							}
-						}
-				}));
-				timeline.setCycleCount(Timeline.INDEFINITE);
 				if(b1.getText() == "Step Continuously"){
 					b1.setText("Stop Stepping");
+					timeline.setCycleCount(Timeline.INDEFINITE);
 					timeline.play();
 				}
 				else{
