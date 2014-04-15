@@ -17,6 +17,6 @@ public class Main extends Application {
 	@Override
 	public void start(Stage s) throws Exception {
 		v = new View(s);
-		
+		s.show();
 	}
 }
