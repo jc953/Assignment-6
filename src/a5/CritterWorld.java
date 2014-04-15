@@ -3,6 +3,8 @@ package a5;
 import java.io.*;
 import java.util.ArrayList;
 
+import a6.View;
+
 /**
  * The CritterWorld class is a representation of a critter world. This contains
  * a 2D array representing every hex in the world and keeps track of the critters
@@ -214,5 +216,9 @@ public class CritterWorld {
 			}
 			System.out.println();
 		}
+	}
+	
+	public void update(View v){
+		v.update(this);
 	}
 }

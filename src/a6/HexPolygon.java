@@ -11,15 +11,15 @@ import javafx.scene.shape.Polygon;
 
 public class HexPolygon extends Polygon {
 	int column, row, arrRow;
-	CritterWorld cw;
+	View v;
 	
 	public HexPolygon(double a, double b, double c, double d, double e, double f, 
-			double g, double h, double i, double j, double k, double l, int col, int row, CritterWorld cw){
+			double g, double h, double i, double j, double k, double l, int col, int row, View v){
 		super(a, b, c, d, e, f, g, h, i, j, k, l);
 		column = col;
 		this.arrRow = row;
 		this.row = arrRow + (col+1)/2;
-		this.cw = cw;
+		this.v = v;
 		setStroke(Color.BLACK);
 		setFill(Color.ANTIQUEWHITE);
 		setupEventHandlers();
@@ -32,7 +32,7 @@ public class HexPolygon extends Polygon {
 			public void handle(MouseEvent e) {
 				System.out.println(column);
 				System.out.println(row);
-				System.out.println(cw.hexes[column][arrRow].rock);
+				System.out.println(v.getCritterWorld().hexes[column][arrRow].rock);
 				
 			}
 			
@@ -40,10 +40,10 @@ public class HexPolygon extends Polygon {
 	}
 	
 	public void draw(){
-		if (cw.hexes[column][arrRow].rock){
+		if (v.getCritterWorld().hexes[column][arrRow].rock){
 			Image img = new Image("file:src/rock.png");
 			setFill(new ImagePattern(img));
-		} else if (cw.hexes[column][arrRow].critter != null){
+		} else if (v.getCritterWorld().hexes[column][arrRow].critter != null){
 			Image img = new Image("file:src/critter.png");
 			setFill(new ImagePattern(img));
 		} else {

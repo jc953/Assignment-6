@@ -47,7 +47,7 @@ public class View {
 					y = j*hA*2;
 				}
 				HexPolygon p = new HexPolygon(hL/2+x, y, hL*3/2+x, y, hL*2+x, hA+y,
-						hL*3/2+x, hA*2+y, hL/2+x, hA*2+y, x, hA+y, i, Constants.MAX_ARRAY_ROW-j-1, cw);
+						hL*3/2+x, hA*2+y, hL/2+x, hA*2+y, x, hA+y, i, Constants.MAX_ARRAY_ROW-j-1, this);
 				world.getChildren().add(p);
 				hexes.add(p);
 			}
@@ -61,9 +61,11 @@ public class View {
 		g.getChildren().add(border);
 	}
 	
-	public void update(){
+	public void update(CritterWorld cw){
+		this.cw = cw;
 		for (HexPolygon h : hexes){
 			h.draw();
+			System.out.println("s");
 		}
 	}
 
@@ -73,5 +75,9 @@ public class View {
 
 	public Pane getVBox() {
 		return vbox;
+	}
+	
+	public CritterWorld getCritterWorld(){
+		return cw;
 	}
 }
