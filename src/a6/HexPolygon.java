@@ -3,7 +3,9 @@ package a6;
 import a5.CritterWorld;
 import javafx.event.EventHandler;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polygon;
 
 public class HexPolygon extends Polygon {
@@ -37,7 +39,10 @@ public class HexPolygon extends Polygon {
 	public void draw(){
 		System.out.println(cw.hexes[column][arrRow].getWorldInfo());
 		if (cw.hexes[column][arrRow].rock){
-			Image image = new Image("src/rock.png");
+			Image img = new Image("file:src/rock.png");
+			ImageView imgView = new ImageView(img);
+			setFill(new ImagePattern(img, 0, 0, 1, 1, true));
+			
 		}
 	}
 }
