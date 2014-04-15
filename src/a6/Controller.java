@@ -42,7 +42,8 @@ public class Controller {
 		b2.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
             public void handle(ActionEvent _) {
-				cw = new CritterWorld();
+				cw = new CritterWorld(true);
+				v.update();
             }
         });
 		
@@ -54,6 +55,7 @@ public class Controller {
 					Label warning = new Label("Please supply text");
 					//add to view
 				}
+				v.update();
             }
         });
 	}
@@ -75,6 +77,7 @@ public class Controller {
 					Label warning = new Label("Please load a world");
 					//add to view
 				}
+				v.update();
             }
         });
 		timeline = new Timeline(new KeyFrame(Duration.millis(1000), 
@@ -85,6 +88,7 @@ public class Controller {
 					if (b1.getText() == "Stop Stepping"){
 						step();
 					}
+					v.update();
 				}
 		}));
 		b1.setOnAction(new EventHandler<ActionEvent>(){
@@ -99,6 +103,7 @@ public class Controller {
 					b1.setText("Step Continuously");
 					timeline.stop();
 				}
+				v.update();
 
 			}
 		});
@@ -147,6 +152,7 @@ public class Controller {
 					//add to view
 					//also need to deal with parseInt error
 				}
+				v.update();
             }
         });
 	}
