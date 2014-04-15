@@ -1,8 +1,11 @@
 package a6;
 
 import a5.*;
-
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -16,7 +19,10 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage s) throws Exception {
+		Constants.read("src/constants.txt");
+		cw = new CritterWorld("src/world.txt");
 		v = new View(s);
+		c = new Controller(v, cw);
 		s.show();
 	}
 }

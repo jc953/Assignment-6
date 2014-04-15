@@ -13,8 +13,10 @@ import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 
 public class View {
+	private Group g;
+	private Pane vbox;
 	public View (Stage s){
-		Group g = new Group();
+		g = new Group();
 		BorderPane border = new BorderPane();
 		Pane pane = new Pane();
 		pane.setPrefWidth(900);
@@ -22,8 +24,7 @@ public class View {
 		p.setFill(Color.ALICEBLUE);
 		
 		pane.getChildren().add(p);
-		VBox vbox = new VBox();
-		vbox.getChildren().add(new Button("step"));
+		vbox = new VBox();
 		border.setLeft(pane);
 		border.setRight(vbox);
 		g.getChildren().add(border);
@@ -31,5 +32,13 @@ public class View {
 		s.setScene(sc);
 		s.setWidth(1200);
 		s.setHeight(900);
+	}
+	
+	public Group getGroup(){
+		return g;
+	}
+	
+	public Pane getVBox(){
+		return vbox;
 	}
 }
