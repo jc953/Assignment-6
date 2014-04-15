@@ -43,19 +43,24 @@ public class Controller {
 			@Override
             public void handle(ActionEvent _) {
 				cw = new CritterWorld(true);
-				v.update();
+				critterLabel.setText("Critters Alive: " + cw.critters.size());
+				cw.update(v);
             }
         });
 		
 		b.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
             public void handle(ActionEvent _) {
-				if(t.getText()!= null) cw = new CritterWorld(t.getText());
+				if(t.getText()!= null){
+					cw = new CritterWorld(t.getText());
+					t.setText("");
+					critterLabel.setText("Critters Alive: " + cw.critters.size());
+				}
 				else{
 					Label warning = new Label("Please supply text");
 					//add to view
 				}
-				v.update();
+				cw.update(v);
             }
         });
 	}
@@ -77,7 +82,7 @@ public class Controller {
 					Label warning = new Label("Please load a world");
 					//add to view
 				}
-				v.update();
+				cw.update(v);
             }
         });
 		timeline = new Timeline(new KeyFrame(Duration.millis(1000), 
@@ -88,7 +93,7 @@ public class Controller {
 					if (b1.getText() == "Stop Stepping"){
 						step();
 					}
-					v.update();
+					cw.update(v);
 				}
 		}));
 		b1.setOnAction(new EventHandler<ActionEvent>(){
@@ -103,7 +108,7 @@ public class Controller {
 					b1.setText("Step Continuously");
 					timeline.stop();
 				}
-				v.update();
+				cw.update(v);
 
 			}
 		});
@@ -129,32 +134,42 @@ public class Controller {
 		b.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
             public void handle(ActionEvent _) {
-				if(t1.getText()!= null && t2.getText()!= null){
-					for(int i=0;i<Integer.parseInt(t1.getText());i++){
-						cw.addRandomCritter(t2.getText());
-					}
-					critterLabel.setText("Critters Alive: " + cw.critters.size());
-				}
-				else{
-					warning = new StackPane();
-					warning.setPrefSize(400,400);
-					Button ok = new Button("Ok");
-					Label warn = new Label("Please Supply Text!");
-					warning.getChildren().add(ok);
-					warning.getChildren().add(warn);
-					v.getGroup().getChildren().add(warning);
-					ok.setOnAction(new EventHandler<ActionEvent>(){
-						@Override
-						public void handle(ActionEvent _){
-							v.getGroup().getChildren().remove(warning);
+				try{
+					if(t1.getText()!= null && t2.getText()!= null){
+						for(int i=0;i<Integer.parseInt(t1.getText());i++){
+							cw.addRandomCritter(t2.getText());
 						}
-					});
-					//add to view
-					//also need to deal with parseInt error
+						t1.setText("");
+						t2.setText("");
+						critterLabel.setText("Critters Alive: " + cw.critters.size());
+					}
+					else{
+						warning();
+					}
 				}
-				v.update();
+				catch (NumberFormatException nfe){
+					warning();
+				}
+				cw.update(v);
             }
         });
+	}
+	
+	void warning(){
+		warning = new StackPane();
+		warning.setPrefSize(400,400);
+		Button ok = new Button("Ok");
+		Label warn = new Label("Please Supply Text!");
+		warning.getChildren().add(ok);
+		warning.getChildren().add(warn);
+		v.getGroup().getChildren().add(warning);
+		ok.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent _){
+				v.getGroup().getChildren().remove(warning);
+			}
+		});
+		
 	}
 
 }
