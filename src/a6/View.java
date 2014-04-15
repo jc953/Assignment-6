@@ -1,5 +1,9 @@
 package a6;
 
-public class View {
+import javafx.stage.Stage;
 
+public class View {
+	public View (Stage s){
+		
+	}
 }
