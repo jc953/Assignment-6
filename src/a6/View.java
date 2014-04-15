@@ -1,32 +1,34 @@
 package a6;
 
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Paint;
-import javafx.stage.Stage;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
+import javafx.stage.Stage;
 
-public class View extends Canvas{
-	Paint background;
+public class View {
 	public View (Stage s){
-		background = Color.BLACK;
 		Group g = new Group();
-		Pane pane = new HBox();
+		BorderPane border = new BorderPane();
+		Pane pane = new Pane();
+		pane.setPrefWidth(900);
+		Polygon p = new Polygon(0, 0, 100, 0, 100, 100, 0, 100);
+		p.setFill(Color.ALICEBLUE);
+		pane.getChildren().add(p);
 		VBox vbox = new VBox();
-		g.getChildren().add(pane);
-		g.getChildren().add(vbox);
+		vbox.getChildren().add(new Button("j"));
+		border.setLeft(pane);
+		border.setRight(vbox);
+		g.getChildren().add(border);
 		Scene sc = new Scene(g);
 		s.setScene(sc);
-		s.setWidth(1500);
+		s.setWidth(1200);
 		s.setHeight(900);
-		s.show();
-		GraphicsContext gc = getGraphicsContext2D();
-		gc.setFill(background);
-		gc.fillRect(0, 0, getWidth(), getHeight());
 	}
 }
