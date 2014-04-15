@@ -41,7 +41,7 @@ public class HexPolygon extends Polygon {
 		if (cw.hexes[column][arrRow].rock){
 			Image img = new Image("file:src/rock.png");
 			ImageView imgView = new ImageView(img);
-			setFill(new ImagePattern(img, 0, 0, 1, 1, true));
+			setFill(new ImagePattern(img));
 			
 		}
 	}
