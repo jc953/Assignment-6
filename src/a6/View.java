@@ -20,9 +20,10 @@ public class View {
 		pane.setPrefWidth(900);
 		Polygon p = new Polygon(0, 0, 100, 0, 100, 100, 0, 100);
 		p.setFill(Color.ALICEBLUE);
+		
 		pane.getChildren().add(p);
 		VBox vbox = new VBox();
-		vbox.getChildren().add(new Button("j"));
+		vbox.getChildren().add(new Button("step"));
 		border.setLeft(pane);
 		border.setRight(vbox);
 		g.getChildren().add(border);
