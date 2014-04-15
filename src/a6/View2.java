@@ -15,12 +15,12 @@ public class View2 {
 		Group g = new Group();
 		BorderPane border = new BorderPane();
 		Pane pane = new Pane();
-		border.setPrefSize(1500, 900);
+		border.setPrefSize(1400, 900);
 		pane.getChildren().add(new Button("hi"));
 		VBox vbox = new VBox();
 		vbox.getChildren().add(new Button("j"));
 		border.setLeft(pane);
-		border.setRight(new Button("Right"));
+		border.setRight(vbox);
 		g.getChildren().add(border);
 		Scene sc = new Scene(g);
 		s.setScene(sc);
