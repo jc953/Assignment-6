@@ -4,34 +4,40 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class Controller {
 	Label stepLabel;
-	Timeline timeline;
 	View v;
 	CritterWorld cw;
 	Label critterLabel;
-	Button b1;
-	TextField t;
-	TextField t1;
-	TextField t2;
-	StackPane warning;
+	Pane warning;
+	Label infoLabel;
 	public Controller(View v){
 		this.v = v;
 		createWorld();
 		setWorldSteps();
 		createCritters();
+		infoLabel = new Label("");
+		v.getVBox().getChildren().add(infoLabel);
 	}
 	
 	void createWorld(){
 		Button b = new Button("Load World");
-		t = new TextField();
+		final TextField t = new TextField();
 		Button b2 = new Button("Load Random World");
 		v.getVBox().getChildren().add(b);
 		v.getVBox().getChildren().add(t);
@@ -57,17 +63,60 @@ public class Controller {
 					critterLabel.setText("Critters Alive: " + cw.critters.size());
 				}
 				else{
-					Label warning = new Label("Please supply text");
-					//add to view
+					warning("Please supply text");
 				}
 				cw.update(v);
             }
         });
+		
+		b.setOnMouseEntered(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				infoLabel.setText("Loads the world from the file \n specified below");
+			}
+		});
+		
+		t.setOnMouseEntered(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				infoLabel.setText("Please Specify a file");
+			}
+		});
+		
+		b2.setOnMouseEntered(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				infoLabel.setText("Generates a random world");
+			}
+		});
+		
+		b.setOnMouseExited(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				infoLabel.setText("");
+			}
+		});
+		
+		t.setOnMouseExited(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				infoLabel.setText("");
+			}
+		});
+		
+		b2.setOnMouseExited(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				infoLabel.setText("");
+			}
+		});
+		
+		
 	}
 	
 	void setWorldSteps(){
 		Button b = new Button("Step Once");
-		b1 = new Button("Step Continuously");
+		final Button b1 = new Button("Step Continuously");
 		stepLabel = new Label("Steps Advanced: 0");
 		critterLabel = new Label("Critters Alive: 0");
 		v.getVBox().getChildren().add(b);
@@ -79,13 +128,12 @@ public class Controller {
             public void handle(ActionEvent _) {
 				if (cw != null) step();
 				else{
-					Label warning = new Label("Please load a world");
-					//add to view
+					warning("Please load a world");
 				}
 				cw.update(v);
             }
         });
-		timeline = new Timeline(new KeyFrame(Duration.millis(1000), 
+		final Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000), 
 				new EventHandler<ActionEvent>(){
 				
 				@Override
@@ -112,6 +160,40 @@ public class Controller {
 
 			}
 		});
+		
+		b.setOnMouseEntered(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				infoLabel.setText("Advances the World one step");
+			}
+		});
+		
+		b.setOnMouseExited(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				infoLabel.setText("");
+			}
+		});
+		
+		b1.setOnMouseEntered(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				if(b1.getText() == "Stop Stepping"){
+					infoLabel.setText("Stops automatic advancement");
+				}
+				else{
+					infoLabel.setText("Advances the world continuously at a rate"
+							+ " \n of one step per second");
+				}
+			}
+		});
+		
+		b1.setOnMouseExited(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				infoLabel.setText("");
+			}
+		});
 	}
 	
 	void step(){
@@ -122,9 +204,9 @@ public class Controller {
 	
 	void createCritters(){
 		Button b = new Button("Load");
-		t1 = new TextField();
+		final TextField t1 = new TextField();
 		Label l = new Label("Critters from file:");
-		t2 = new TextField();
+		final TextField t2 = new TextField();
 		v.getVBox().getChildren().add(b);
 		v.getVBox().getChildren().add(t1);
 		v.getVBox().getChildren().add(l);
@@ -152,20 +234,79 @@ public class Controller {
 				cw.update(v);
             }
         });
+		
+		b.setOnMouseEntered(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				infoLabel.setText("Loads the number of critters specified "
+						+ "\nbelow from file specified below");
+			}
+		});
+		
+		b.setOnMouseExited(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				infoLabel.setText("");
+			}
+		});
+		
+		t1.setOnMouseEntered(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				infoLabel.setText("The number of critters to generate");
+			}
+		});
+		
+		t1.setOnMouseExited(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				infoLabel.setText("");
+			}
+		});
+		
+		t2.setOnMouseEntered(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				infoLabel.setText("the file to generate the critters from");
+			}
+		});
+		
+		t2.setOnMouseExited(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				infoLabel.setText("");
+			}
+		});
 	}
 	
 	void warning(String w){
-		warning = new StackPane();
+		warning = new VBox();
 		warning.setPrefSize(400,400);
 		Button ok = new Button("Ok");
+		ok.setOnMouseEntered(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				infoLabel.setText("Click to dismiss window");
+			}
+		});
+		ok.setPrefWidth(150);
 		Label warn = new Label(w);
 		warning.getChildren().add(ok);
 		warning.getChildren().add(warn);
-		v.getGroup().getChildren().add(warning);
+        final Stage s1 = new Stage();
+        Group g = new Group();
+        g.getChildren().add(warning);
+        Scene scene = new Scene(g);
+        s1.setScene(scene);
+        s1.setWidth(600);
+        s1.setHeight(200);
+        s1.setX(450);
+        s1.setY(450);
+        s1.show();
 		ok.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent _){
-				v.getGroup().getChildren().remove(warning);
+				s1.close();
 			}
 		});
 		
