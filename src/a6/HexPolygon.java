@@ -44,8 +44,27 @@ public class HexPolygon extends Polygon {
 			Image img = new Image("file:src/rock.png");
 			setFill(new ImagePattern(img));
 		} else if (v.getCritterWorld().hexes[column][arrRow].critter != null){
-			Image img = new Image("file:src/critter.png");
-			//FIND WAY TO TURN DIRECTION
+			Image img;
+			switch (v.getCritterWorld().hexes[column][arrRow].critter.direction){
+			case 1: 
+				img = new Image("file:src/critter1.png");
+				break;
+			case 2: 
+				img = new Image("file:src/critter2.png");
+				break;
+			case 3: 
+				img = new Image("file:src/critter3.png");
+				break;
+			case 4: 
+				img = new Image("file:src/critter4.png");
+				break;
+			case 5: 
+				img = new Image("file:src/critter5.png");
+				break;
+			default:
+				img = new Image("file:src/critter.png");
+				break;
+			}
 			setFill(new ImagePattern(img));
 		} else {
 			setFill(Color.ANTIQUEWHITE);
