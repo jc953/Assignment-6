@@ -7,6 +7,8 @@ import a5.CritterWorld;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -20,8 +22,8 @@ public class View {
 	private ArrayList<HexPolygon> hexes;
 	private int width = 1200;
 	private int height = 900;
-	private int hL = 60;
-	private double hA = 30*Math.pow(3, 0.5);
+	private int hL = 50;
+	private double hA = 25*Math.pow(3, 0.5);
 	private CritterWorld cw;
 
 	public View(Stage s) {
