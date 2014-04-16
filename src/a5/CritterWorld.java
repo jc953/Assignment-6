@@ -13,7 +13,7 @@ import a6.View;
 public class CritterWorld {
 	public Hex[][] hexes;
 	public ArrayList<Critter> critters;
-	int steps;
+	public int steps;
 	
 	/**
 	 * Uses a text file to create a critter world. It will read in the rocks 

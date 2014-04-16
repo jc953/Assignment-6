@@ -14,7 +14,6 @@ import javafx.util.Duration;
 public class Controller {
 	Label stepLabel;
 	Timeline timeline;
-	int numSteps;
 	View v;
 	CritterWorld cw;
 	Label critterLabel;
@@ -25,7 +24,6 @@ public class Controller {
 	StackPane warning;
 	public Controller(View v){
 		this.v = v;
-		numSteps = 0;
 		createWorld();
 		setWorldSteps();
 		createCritters();
@@ -43,6 +41,7 @@ public class Controller {
 			@Override
             public void handle(ActionEvent _) {
 				cw = new CritterWorld(true);
+		        stepLabel.setText("Steps Advanced: " + cw.steps);
 				critterLabel.setText("Critters Alive: " + cw.critters.size());
 				cw.update(v);
             }
@@ -54,6 +53,7 @@ public class Controller {
 				if(t.getText()!= null){
 					cw = new CritterWorld(t.getText());
 					t.setText("");
+			        stepLabel.setText("Steps Advanced: " + cw.steps);
 					critterLabel.setText("Critters Alive: " + cw.critters.size());
 				}
 				else{
@@ -116,8 +116,7 @@ public class Controller {
 	
 	void step(){
     	cw.step();
-        numSteps++;
-        stepLabel.setText("Steps Advanced: " + numSteps);
+        stepLabel.setText("Steps Advanced: " + cw.steps);
         critterLabel.setText("Critters Alive: " + cw.critters.size());
 	}
 	
@@ -144,22 +143,22 @@ public class Controller {
 						critterLabel.setText("Critters Alive: " + cw.critters.size());
 					}
 					else{
-						warning();
+						warning("Please Supply Text!");
 					}
 				}
 				catch (NumberFormatException nfe){
-					warning();
+					warning("Please give a number in the correct format");
 				}
 				cw.update(v);
             }
         });
 	}
 	
-	void warning(){
+	void warning(String w){
 		warning = new StackPane();
 		warning.setPrefSize(400,400);
 		Button ok = new Button("Ok");
-		Label warn = new Label("Please Supply Text!");
+		Label warn = new Label(w);
 		warning.getChildren().add(ok);
 		warning.getChildren().add(warn);
 		v.getGroup().getChildren().add(warning);
