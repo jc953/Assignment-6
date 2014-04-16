@@ -65,7 +65,6 @@ public class View {
 		this.cw = cw;
 		for (HexPolygon h : hexes){
 			h.draw();
-			System.out.println("s");
 		}
 	}
 

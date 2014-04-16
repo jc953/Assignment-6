@@ -45,6 +45,7 @@ public class HexPolygon extends Polygon {
 			setFill(new ImagePattern(img));
 		} else if (v.getCritterWorld().hexes[column][arrRow].critter != null){
 			Image img = new Image("file:src/critter.png");
+			//FIND WAY TO TURN DIRECTION
 			setFill(new ImagePattern(img));
 		} else {
 			setFill(Color.ANTIQUEWHITE);
