@@ -81,4 +81,12 @@ public class View {
 	public CritterWorld getCritterWorld(){
 		return cw;
 	}
+	
+	public ArrayList<HexPolygon> getHexes(){
+		return hexes;
+	}
+	
+	public Pane getWorld(){
+		return world;
+	}
 }

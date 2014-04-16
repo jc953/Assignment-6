@@ -15,6 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -26,13 +27,18 @@ public class Controller {
 	Label critterLabel;
 	Pane warning;
 	Label infoLabel;
+	Label hexSelected;
+	TextField position;
+	String clicked;
+	HexPolygon selected;
 	public Controller(View v){
 		this.v = v;
 		createWorld();
 		setWorldSteps();
 		createCritters();
 		infoLabel = new Label("");
-		v.getVBox().getChildren().add(infoLabel);
+		hexControls();
+		
 	}
 	
 	void createWorld(){
@@ -309,6 +315,67 @@ public class Controller {
 				s1.close();
 			}
 		});
+		
+	}
+	
+	void hexControls(){
+		hexSelected = new Label("Hex Selected:");
+		position = new TextField("Enter: (column, row) of desired Hex,"
+				+ "or click on desired Hex");
+		v.getVBox().getChildren().add(infoLabel);
+		v.getVBox().getChildren().add(hexSelected);
+		v.getVBox().getChildren().add(position);
+		clicked = "";
+		v.getWorld().setOnMouseExited(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				if(clicked == ""){
+					position.setText("Enter: (column, row) of desired Hex,"
+							+ "or click on desired Hex");
+				}
+				else{
+					position.setText(clicked);
+				}
+				
+			}
+		});
+		
+		for(final HexPolygon h: v.getHexes()){
+			h.setOnMouseEntered(new EventHandler<MouseEvent>(){
+				@Override
+				public void handle(MouseEvent _){
+					position.setText("("+h.column+","+h.row+")");
+				}
+			});
+			
+			h.setOnMouseClicked(new EventHandler<MouseEvent>(){
+				@Override
+				public void handle(MouseEvent _){
+					position.setText("("+h.column+","+h.row+")");
+					clicked = "("+h.column+","+h.row+")";
+					if(selected != null){
+						selected.setFill(h.getFill());
+						selected.setStroke(h.getStroke());
+					}
+					selected = h;
+					h.setStroke(Color.RED);
+					h.setFill(Color.BLUE);
+				}
+			});
+		}
+		
+		if(selected != null){
+			selected.setOnMouseClicked(new EventHandler<MouseEvent>(){
+				@Override
+				public void handle(MouseEvent _){
+					selected.setFill(Color.ANTIQUEWHITE);
+					selected.setStroke(Color.BLACK);
+					selected = null;
+				}
+			});
+		}
+		
+		//do functionality of typing row,column instead of selecting
 		
 	}
 
