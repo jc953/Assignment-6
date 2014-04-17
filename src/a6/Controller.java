@@ -37,6 +37,7 @@ public class Controller {
 		setWorldSteps();
 		createCritters();
 		infoLabel = new Label("");
+		v.getVBox().getChildren().add(infoLabel);
 		hexControls();
 		
 	}
@@ -322,7 +323,6 @@ public class Controller {
 		hexSelected = new Label("Hex Selected:");
 		position = new TextField("Enter: (column, row) of desired Hex,"
 				+ "or click on desired Hex");
-		v.getVBox().getChildren().add(infoLabel);
 		v.getVBox().getChildren().add(hexSelected);
 		v.getVBox().getChildren().add(position);
 		clicked = "";
@@ -351,15 +351,23 @@ public class Controller {
 			h.setOnMouseClicked(new EventHandler<MouseEvent>(){
 				@Override
 				public void handle(MouseEvent _){
-					position.setText("("+h.column+","+h.row+")");
 					clicked = "("+h.column+","+h.row+")";
+					position.setText(clicked);
 					if(selected != null){
 						selected.setFill(h.getFill());
 						selected.setStroke(h.getStroke());
 					}
-					selected = h;
-					h.setStroke(Color.RED);
-					h.setFill(Color.BLUE);
+					if(h.equals(selected)){
+						h.setFill(Color.ANTIQUEWHITE);
+						h.setStroke(Color.BLACK);
+						clicked = "";
+						selected = null;
+					}
+					else{
+						selected = h;
+						h.setStroke(Color.RED);
+						h.setFill(Color.BLUE);
+					}
 				}
 			});
 		}
