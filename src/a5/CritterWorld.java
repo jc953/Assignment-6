@@ -66,7 +66,7 @@ public class CritterWorld {
 		critters = new ArrayList<Critter>();
 		steps = 0;
 		if (rocks){
-			int numberRocks = Constants.MAX_COLUMN*Constants.MAX_ARRAY_ROW/10;
+			int numberRocks = Constants.MAX_COLUMN*Constants.MAX_ARRAY_ROW/20;
 			for (int i = 0; i < numberRocks; i++){
 				int col = (int)(Math.random() * hexes.length);
 				int row = (int)(Math.random() * hexes[0].length);

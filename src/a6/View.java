@@ -13,6 +13,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 
 public class View {
@@ -24,6 +25,7 @@ public class View {
 	private int height = 900;
 	private int hL = 50;
 	private double hA = 25*Math.pow(3, 0.5);
+	private int diff = 5;
 	private CritterWorld cw;
 
 	public View(Stage s) {
@@ -37,8 +39,8 @@ public class View {
 		
 		BorderPane border = new BorderPane();
 		world = new Pane();
-		world.setPrefWidth(Constants.MAX_COLUMN*hL*3/2 + hL/2);
-		world.setPrefHeight(Constants.MAX_ARRAY_ROW*hA*2+hA);
+		world.setPrefWidth(Constants.MAX_COLUMN*hL*3/2+Constants.MAX_COLUMN*diff + hL/2);
+		world.setPrefHeight(Constants.MAX_ARRAY_ROW*hA*2+Constants.MAX_ARRAY_ROW*diff+hA);
 		for(int i = 0; i < Constants.MAX_COLUMN; i++){
 			for (int j = 0; j < Constants.MAX_ARRAY_ROW; j++){
 				int x = i * hL*3/2;
@@ -48,8 +50,8 @@ public class View {
 				} else {
 					y = j*hA*2;
 				}
-				HexPolygon p = new HexPolygon(hL/2+x, y, hL*3/2+x, y, hL*2+x, hA+y,
-						hL*3/2+x, hA*2+y, hL/2+x, hA*2+y, x, hA+y, i, Constants.MAX_ARRAY_ROW-j-1, this);
+				HexPolygon p = new HexPolygon(hL/2+x+diff*i, y+diff*j, hL*3/2+x+diff*i, y+diff*j, hL*2+x+diff*i, hA+y+diff*j,
+						hL*3/2+x+diff*i, hA*2+y+diff*j, hL/2+x+diff*i, hA*2+y+diff*j, x+diff*i, hA+y+diff*j, i, Constants.MAX_ARRAY_ROW-j-1, this);
 				world.getChildren().add(p);
 				hexes.add(p);
 			}
