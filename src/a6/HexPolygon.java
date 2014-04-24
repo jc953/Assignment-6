@@ -15,7 +15,7 @@ public class HexPolygon extends Polygon {
 	int column, row, arrRow;
 	View v;
 	double x, y;
-	static ImagePattern background = new ImagePattern(new Image("file:src/background.png"));
+	static Color background = Color.color(0, .6, 0);
 	
 	public HexPolygon(double a, double b, double c, double d, double e, double f, 
 			double g, double h, double i, double j, double k, double l, int col, int row, View v){
@@ -78,7 +78,7 @@ public class HexPolygon extends Polygon {
 			imgv.setFitWidth(Constants.HEX_LENGTH);
 			imgv.setX(x-Constants.HEX_LENGTH/2);
 			imgv.setY(y-Constants.HEX_LENGTH/2);
-			imgv.setRotate(Math.random()*360);
+			imgv.setRotate(v.getCritterWorld().hexes[column][arrRow].rockDir);
 			return imgv;
 		} else if (getCritter() != null){
 			Image img;

@@ -8,6 +8,7 @@ public class Hex {
 	public int food = 0;
 	public boolean rock = false;
 	public Critter critter = null;
+	public double rockDir = Math.random()*360;
 	
 	/**
 	 * Checks if there is currently a rock or critter on this space. Returns true
