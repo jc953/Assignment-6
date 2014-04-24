@@ -3,17 +3,15 @@ package a6;
 import java.util.ArrayList;
 
 import a5.Constants;
+import a5.Critter;
 import a5.CritterWorld;
+import ast.Program;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 
 public class View {
@@ -21,15 +19,24 @@ public class View {
 	protected final Pane world;
 	private Pane vbox;
 	private ArrayList<HexPolygon> hexes;
-	private int width = 1200;
-	private int height = 900;
-	private int hL = 40;
-	private double hA = 20*Math.pow(3, 0.5);
-	private int diff = 4;
+	private int width;
+	private int height;
+	private int hL;
+	private double hA;
+	private int diff;
 	private CritterWorld cw;
 	private Pane actors;
+	ArrayList<Program> programs;
+	ArrayList<Double> hues;
 
 	public View(Stage s, CritterWorld cw) {
+		width = Constants.SCENE_WIDTH;
+		height = Constants.SCENE_HEIGHT;
+		hL = Constants.HEX_LENGTH;
+		hA = Constants.HEX_APOTHEM;
+		diff = Constants.HEX_DIFF;
+		programs = new ArrayList<Program>();
+		hues = new ArrayList<Double>();
 		g = new Group();
 		Scene scene = new Scene(g);
 		s.setScene(scene);
@@ -74,10 +81,20 @@ public class View {
 		world.getChildren().remove(actors);
 		actors = new Pane();
 		world.getChildren().add(actors);
+		setColors();
 		for (HexPolygon h : hexes){
 			h.reset();
 			if (h.hasObject()){
 				actors.getChildren().add(h.draw());
+			}
+		}
+	}
+	
+	public void setColors(){
+		for (Critter c : cw.critters){
+			if (!programs.contains(c.program)){
+				programs.add(c.program);
+				hues.add(Math.random());
 			}
 		}
 	}

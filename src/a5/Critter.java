@@ -13,7 +13,7 @@ import ast.*;
  */
 public class Critter {
 	CritterWorld critterworld;
-	Program program;
+	public Program program;
 	Rule lastRule;
 	public int[] mem;
 	public int direction;

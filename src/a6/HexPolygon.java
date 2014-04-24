@@ -1,12 +1,13 @@
 package a6;
 
-import a5.CritterWorld;
+import a5.Constants;
+import a5.Critter;
 import javafx.event.EventHandler;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polygon;
 
 public class HexPolygon extends Polygon {
@@ -46,7 +47,19 @@ public class HexPolygon extends Polygon {
 	}
 	
 	public boolean hasObject(){
-		return v.getCritterWorld().hexes[column][arrRow].rock || v.getCritterWorld().hexes[column][arrRow].critter != null;
+		return isRock() || getCritter() != null || getFood() > 0;
+	}
+	
+	public boolean isRock(){
+		return v.getCritterWorld().hexes[column][arrRow].rock;
+	}
+	
+	public int getFood(){
+		return v.getCritterWorld().hexes[column][arrRow].food;
+	}
+	
+	public Critter getCritter(){
+		return v.getCritterWorld().hexes[column][arrRow].critter;
 	}
 	
 	public void reset(){
@@ -54,27 +67,33 @@ public class HexPolygon extends Polygon {
 	}
 	
 	public ImageView draw(){
-		if (v.getCritterWorld().hexes[column][arrRow].rock){
+		if (isRock()){
 			setFill(Color.WHITE);
 			Image img = new Image("file:src/rock.png");
 			ImageView imgv = new ImageView();
 			imgv.setImage(img);
-			imgv.setFitHeight(40);
-			imgv.setFitWidth(40);
-			imgv.setX(x-20);
-			imgv.setY(y-20);
+			imgv.setFitHeight(Constants.HEX_LENGTH);
+			imgv.setFitWidth(Constants.HEX_LENGTH);
+			imgv.setX(x-Constants.HEX_LENGTH/2);
+			imgv.setY(y-Constants.HEX_LENGTH/2);
 			imgv.setRotate(Math.random()*360);
 			return imgv;
-		} else if (v.getCritterWorld().hexes[column][arrRow].critter != null){
+		} else if (getCritter() != null){
 			setFill(Color.WHITE);
 			Image img = new Image("file:src/critter.png");
 			ImageView imgv = new ImageView();
 			imgv.setImage(img);
-			imgv.setFitHeight(40);
-			imgv.setFitWidth(40);
-			imgv.setX(x-20);
-			imgv.setY(y-20);
-			imgv.setRotate(v.getCritterWorld().hexes[column][arrRow].critter.direction*60);
+			double size = Constants.HEX_LENGTH/1.5 + getCritter().mem[3]*4;
+			if (size > 50) size = 50;
+			imgv.setFitHeight(size);
+			imgv.setFitWidth(size);
+			imgv.setX(x-size/2.0);
+			imgv.setY(y-size/2.0);
+			imgv.setRotate(getCritter().direction*60);
+			ColorAdjust color = new ColorAdjust();
+			double hue = v.hues.get(v.programs.indexOf(getCritter().program));
+			color.setHue(hue);
+			imgv.setEffect(color);
 			return imgv;
 		} else {
 			System.out.println("Cannot draw rock or critter here");

@@ -27,6 +27,11 @@ public class Constants {
 	static int ABILITY_COST;
 	public static int INITIAL_ENERGY;
 	static int MIN_MEMORY;
+	public static int SCENE_WIDTH;
+	public static int SCENE_HEIGHT;
+	public static int HEX_LENGTH;
+	public static double HEX_APOTHEM;
+	public static int HEX_DIFF;
 	
 	/**
 	 * Reads the constants from a given file and assigns them to the variables.
@@ -94,6 +99,11 @@ public class Constants {
 				line = br.readLine();
 			}
 			MAX_ARRAY_ROW = MAX_ROW-MAX_COLUMN/2;
+			SCENE_WIDTH = 1200;
+			SCENE_HEIGHT = 900;
+			HEX_LENGTH = 40;
+			HEX_APOTHEM = 20*Math.pow(3, 0.5);
+			HEX_DIFF = 4;
 			br.close();
 		}
 		catch(FileNotFoundException fnfe){
