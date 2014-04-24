@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.text.Font;
 
 public class Controller {
 	Label stepLabel;
@@ -42,6 +43,7 @@ public class Controller {
 		setWorldSteps();
 		createCritters();
 		infoLabel = new Label("");
+		infoLabel.setFont(Font.font("Comic Sans MS",14));
 		infoLabel.setMinHeight(80.0);
 		infoLabel.setMaxHeight(80.0);
 		v.getVBox().setMinWidth(200.0);
@@ -135,6 +137,7 @@ public class Controller {
 		final Button b1 = new Button("Step Continuously");
 		final HBox speedControls = new HBox();
 		stepLabel = new Label("Steps Advanced: 0");
+		stepLabel.setFont(Font.font("Copperplate Gothic Bold",14));
 		critterLabel = new Label("Critters Alive: 0");
 		final Button b2 = new Button("Set step speed to: ");
 		final TextField t = new TextField();
@@ -420,7 +423,7 @@ public class Controller {
 			selected.setOnMouseClicked(new EventHandler<MouseEvent>(){
 				@Override
 				public void handle(MouseEvent _){
-					selected.setFill(Color.ANTIQUEWHITE);
+					selected.setFill(Color.DARKSEAGREEN);
 					selected.setStroke(Color.BLACK);
 					selected = null;
 				}

@@ -23,7 +23,7 @@ public class HexPolygon extends Polygon {
 		this.row = arrRow + (col+1)/2;
 		this.v = v;
 		setStroke(Color.BLACK);
-		setFill(Color.ANTIQUEWHITE);
+		setFill(Color.DARKSEAGREEN);
 		setupEventHandlers();
 	}
 	
@@ -63,7 +63,7 @@ public class HexPolygon extends Polygon {
 	}
 	
 	public void reset(){
-		setFill(Color.ANTIQUEWHITE);
+		setFill(Color.DARKSEAGREEN);
 	}
 	
 	public ImageView draw(){

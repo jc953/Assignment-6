@@ -13,12 +13,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 public class View {
 	private Group g;
 	protected final StackPane world;
-	private Pane vbox;
+	private VBox vbox;
 	private ArrayList<HexPolygon> hexes;
 	private int width;
 	private int height;
@@ -73,6 +75,7 @@ public class View {
 		sp.setContent(world);
 		sp.setPrefSize(850,850);
 		vbox = new VBox();
+		scene.setFill(Color.BLANCHEDALMOND);
 		border.setLeft(sp);
 		border.setRight(vbox);
 		g.getChildren().add(border);
