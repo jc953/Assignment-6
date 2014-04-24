@@ -9,12 +9,15 @@ import ast.Program;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 
 public class View {
@@ -30,6 +33,7 @@ public class View {
 	private CritterWorld cw;
 	private Pane actors;
 	private Pane hexesPane;
+	private Polygon background;
 	ArrayList<Program> programs;
 	ArrayList<Double> hues;
 
@@ -50,8 +54,12 @@ public class View {
 		this.cw = cw;
 		BorderPane border = new BorderPane();
 		world = new StackPane();
-		world.setPrefWidth(Constants.MAX_COLUMN*hL*3/2+Constants.MAX_COLUMN*diff + hL/2);
-		world.setPrefHeight(Constants.MAX_ARRAY_ROW*hA*2+Constants.MAX_ARRAY_ROW*diff+hA);
+		double width = Constants.MAX_COLUMN*hL*3/2+Constants.MAX_COLUMN*diff + hL/2;
+		double height = Constants.MAX_ARRAY_ROW*hA*2+Constants.MAX_ARRAY_ROW*diff+hA;
+		world.setPrefWidth(width);
+		world.setPrefHeight(height);
+		background = new Polygon(0,0, width, 0, width, height, 0, height);
+		background.setFill(Color.WHITE);
 		hexesPane = new Pane();
 		for(int i = 0; i < Constants.MAX_COLUMN; i++){
 			for (int j = 0; j < Constants.MAX_ARRAY_ROW; j++){
@@ -70,7 +78,7 @@ public class View {
 			}
 		}
 		actors = new Pane();
-		world.getChildren().addAll(actors, hexesPane);
+		world.getChildren().addAll(background, actors, hexesPane);
 		ScrollPane sp = new ScrollPane();
 		sp.setContent(world);
 		sp.setPrefSize(850,850);

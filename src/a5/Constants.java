@@ -101,9 +101,9 @@ public class Constants {
 			MAX_ARRAY_ROW = MAX_ROW-MAX_COLUMN/2;
 			SCENE_WIDTH = 1200;
 			SCENE_HEIGHT = 900;
-			HEX_LENGTH = 40;
-			HEX_APOTHEM = 20*Math.pow(3, 0.5);
-			HEX_DIFF = 4;
+			HEX_LENGTH = 30;
+			HEX_APOTHEM = HEX_LENGTH/2*Math.pow(3, 0.5);
+			HEX_DIFF = HEX_LENGTH/10;
 			br.close();
 		}
 		catch(FileNotFoundException fnfe){

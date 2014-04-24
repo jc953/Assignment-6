@@ -8,12 +8,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polygon;
 
 public class HexPolygon extends Polygon {
 	int column, row, arrRow;
 	View v;
 	double x, y;
+	static ImagePattern background = new ImagePattern(new Image("file:src/background.png"));
 	
 	public HexPolygon(double a, double b, double c, double d, double e, double f, 
 			double g, double h, double i, double j, double k, double l, int col, int row, View v){
@@ -23,7 +25,7 @@ public class HexPolygon extends Polygon {
 		this.row = arrRow + (col+1)/2;
 		this.v = v;
 		setStroke(Color.BLACK);
-		setFill(Color.DARKSEAGREEN);
+		setFill(background);
 		setupEventHandlers();
 	}
 	
@@ -63,12 +65,12 @@ public class HexPolygon extends Polygon {
 	}
 	
 	public void reset(){
-		setFill(Color.DARKSEAGREEN);
+		setFill(background);
 	}
 	
 	public ImageView draw(){
+		setFill(Color.TRANSPARENT);
 		if (isRock()){
-			setFill(Color.TRANSPARENT);
 			Image img = new Image("file:src/rock.png");
 			ImageView imgv = new ImageView();
 			imgv.setImage(img);
@@ -79,7 +81,6 @@ public class HexPolygon extends Polygon {
 			imgv.setRotate(Math.random()*360);
 			return imgv;
 		} else if (getCritter() != null){
-			setFill(Color.TRANSPARENT);
 			Image img;
 			if (getFood() > 0) {
 				img = new Image("file:src/critterfood.png");
@@ -88,8 +89,8 @@ public class HexPolygon extends Polygon {
 			}
 			ImageView imgv = new ImageView();
 			imgv.setImage(img);
-			double size = Constants.HEX_LENGTH/1.5 + getCritter().mem[3]*4;
-			if (size > 50) size = 50;
+			double size = Constants.HEX_LENGTH/1.5 + getCritter().mem[3]*Constants.HEX_LENGTH/20.0;
+			if (size > Constants.HEX_LENGTH) size = Constants.HEX_LENGTH;
 			imgv.setFitHeight(size);
 			imgv.setFitWidth(size);
 			imgv.setX(x-size/2.0);
@@ -106,7 +107,6 @@ public class HexPolygon extends Polygon {
 			imgv.setEffect(color);
 			return imgv;
 		} else if (getFood() > 0){
-			setFill(Color.TRANSPARENT);
 			Image img = new Image("file:src/food.png");
 			ImageView imgv = new ImageView();
 			imgv.setImage(img);
