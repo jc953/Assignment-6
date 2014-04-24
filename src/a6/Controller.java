@@ -6,18 +6,14 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -29,15 +25,19 @@ public class Controller {
 	Pane warning;
 	Label infoLabel;
 	Label hexSelected;
-	TextArea position;
+	TextField position;
 	String clicked;
 	HexPolygon selected;
 	Label hexCritterInfo;
 	Label hexRockInfo;
 	Label hexFoodInfo;
+	int speed;
+	VBox hexBox;
+	Timeline timeline;
 	public Controller(View v, CritterWorld cw){
 		this.cw = cw;
 		this.v = v;
+		speed = 1000;
 		createWorld();
 		setWorldSteps();
 		createCritters();
@@ -48,7 +48,6 @@ public class Controller {
 		v.getVBox().setMaxWidth(200.0);
 		v.getVBox().getChildren().add(infoLabel);
 		hexSelection();
-		hexControls();
 		
 	}
 	
@@ -134,23 +133,17 @@ public class Controller {
 	void setWorldSteps(){
 		Button b = new Button("Step Once");
 		final Button b1 = new Button("Step Continuously");
+		final HBox speedControls = new HBox();
 		stepLabel = new Label("Steps Advanced: 0");
 		critterLabel = new Label("Critters Alive: 0");
-		v.getVBox().getChildren().add(b);
-		v.getVBox().getChildren().add(b1);
-		v.getVBox().getChildren().add(stepLabel);
-		v.getVBox().getChildren().add(critterLabel);
-		b.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-            public void handle(ActionEvent _) {
-				if (cw != null) step();
-				else{
-					warning("Please load a world");
-				}
-				cw.update(v);
-            }
-        });
-		final Timeline timeline = new Timeline(new KeyFrame(Duration.millis(1000), 
+		final Button b2 = new Button("Set step speed to: ");
+		final TextField t = new TextField();
+		t.setMaxWidth(50.0); 
+		t.setMinWidth(50.0);
+		speedControls.getChildren().addAll(b2, t);
+		v.getVBox().getChildren().addAll(b, b1, speedControls, stepLabel, critterLabel);
+		
+		timeline = new Timeline(new KeyFrame(Duration.millis(speed), 
 				new EventHandler<ActionEvent>(){
 				
 				@Override
@@ -161,6 +154,49 @@ public class Controller {
 					cw.update(v);
 				}
 		}));
+		
+		
+		b2.setOnAction(new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent _){
+				try{
+					if(t.getText()!= null){
+						speed = Integer.parseInt(t.getText());
+						t.setText("");
+						timeline = new Timeline(new KeyFrame(Duration.millis(speed), 
+								new EventHandler<ActionEvent>(){
+								
+								@Override
+								public void handle(ActionEvent arg0){
+									if (b1.getText() == "Stop Stepping"){
+										step();
+									}
+									cw.update(v);
+								}
+						}));
+					}
+					else{
+						warning("Please Supply Text!");
+					}
+				}
+				catch (NumberFormatException nfe){
+					warning("Please give a number in the correct format");
+				}
+			}
+		});
+		
+		b.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+            public void handle(ActionEvent _) {
+				if (cw != null) step();
+				else{
+					warning("Please load a world");
+				}
+				cw.update(v);
+            }
+        });
+		
+		
 		b1.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent _){
@@ -331,10 +367,7 @@ public class Controller {
 	
 	void hexSelection(){
 		hexSelected = new Label("Hex Selected:");
-		position = new TextArea("Enter: (column, row) \nof desired Hex, \n"
-				+ "or click on desired Hex");
-		position.setPrefColumnCount(3);
-		position.setPrefHeight(80.0);
+		position = new TextField("click on desired Hex");
 		v.getVBox().getChildren().add(hexSelected);
 		v.getVBox().getChildren().add(position);
 		clicked = "";
@@ -342,8 +375,7 @@ public class Controller {
 			@Override
 			public void handle(MouseEvent _){
 				if(clicked == ""){
-					position.setText("Enter: (column, row) \nof desired Hex, \n"
-							+ "or click on desired Hex");
+					position.setText("click on desired Hex");
 				}
 				else{
 					position.setText(clicked);
@@ -372,9 +404,12 @@ public class Controller {
 						h.setStroke(Color.BLACK);
 						clicked = "";
 						selected = null;
+						removeHexBox();
 					}
 					else{
 						selected = h;
+						removeHexBox();
+						hexControls();
 						h.setStroke(Color.RED);
 					}
 				}
@@ -398,20 +433,22 @@ public class Controller {
 	
 	void hexControls(){
 		if (selected == null) return;
+		hexBox = new VBox();
 		if(selected.isRock()){
 			hexRockInfo = new Label("Hex Information:\nThis is a rock");
-			v.getVBox().getChildren().add(hexRockInfo);
+			hexBox.getChildren().add(hexRockInfo);
+			v.getVBox().getChildren().add(hexBox);
 			return;
 		}
 		hexRockInfo = new Label("Hex Information:");
 		hexFoodInfo = new Label("Food value: " + selected.getFood());
 		if (selected.getCritter() == null){
 			hexCritterInfo = new Label("There is no critter\ncurrently inhabiting\nthis hex");
-			v.getVBox().getChildren().addAll(hexRockInfo, hexFoodInfo, hexCritterInfo);
-			Button b = new Button("Load a Critter in this \nhex"
-					+ "from file:");
+			hexBox.getChildren().addAll(hexRockInfo, hexFoodInfo, hexCritterInfo);
+			Button b = new Button("Load a Critter in \nthis hex"
+					+ " from file:");
 			final TextField t1 = new TextField();
-			v.getVBox().getChildren().addAll(b, t1);
+			hexBox.getChildren().addAll(b, t1);
 			
 			b.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
@@ -420,23 +457,24 @@ public class Controller {
 					cw.addCritterHere(selected.column, selected.arrRow, t1.getText());
 					t1.setText("");
 					critterLabel.setText("Critters Alive: " + cw.critters.size());
-					displayCritterInfo();
+					cw.update(v);
+					removeHexBox();
+					hexControls();
 					}
 					else{
 						warning("Please Supply Text");
 					}
 				}
 			});			
-			return;
+			v.getVBox().getChildren().add(hexBox);
 		}
-		else{
-			displayCritterInfo();
-		}
+		displayCritterInfo();
 	}
 	
 	void displayCritterInfo(){
+		if(selected.getCritter() == null) return;
 		hexCritterInfo = new Label("Critter Vital Statistics:");
-		v.getVBox().getChildren().addAll(hexRockInfo, hexFoodInfo, hexCritterInfo,
+		hexBox.getChildren().addAll(hexRockInfo, hexFoodInfo, hexCritterInfo,
 				new Label("Memory size: " + selected.getCritter().mem[0]), 
 				new Label("Defensive ability: " + selected.getCritter().mem[1]), 
 				new Label("Offensive ability: " + selected.getCritter().mem[2]), 
@@ -446,8 +484,25 @@ public class Controller {
 				new Label("Tag value: " + selected.getCritter().mem[6]), 
 				new Label("Posture value: " + selected.getCritter().mem[7]));
 		for(int i = 8; i < selected.getCritter().mem.length;i++){
-			v.getVBox().getChildren().add(new Label("mem["+i+"]: "+ selected.getCritter().mem[i]));
+			hexBox.getChildren().add(new Label("mem["+i+"]: "+ selected.getCritter().mem[i]));
 		}
-		return;
+		StringBuffer sb = new StringBuffer();
+		selected.getCritter().program.prettyPrint(sb);
+		hexBox.getChildren().addAll(new Label("Program: "),new Label(sb.toString()));
+		sb = new StringBuffer("The last rule performed was \n");
+		if (selected.getCritter().lastRule != null) {
+			selected.getCritter().lastRule.prettyPrint(sb);
+			hexBox.getChildren().add(new Label(sb.toString()));
+		} else {
+			hexBox.getChildren().add(new Label("This critter has not \nperformed a rule yet."));
+		}
+		v.getVBox().getChildren().add(hexBox);
 	}
-}
+	
+	void removeHexBox(){
+		v.getVBox().getChildren().remove(hexBox);
+		hexBox = new VBox();
+	}
+}//add warnings and conditions with wrong stuff put into text fields. 
+//Also add info for newly created text fields. Consider popups and shit
+//Put some text into bold

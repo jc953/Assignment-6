@@ -14,7 +14,7 @@ import ast.*;
 public class Critter {
 	CritterWorld critterworld;
 	public Program program;
-	Rule lastRule;
+	public Rule lastRule;
 	public int[] mem;
 	public int direction;
 	int column;
