@@ -506,3 +506,6 @@ public class Controller {
 }//add warnings and conditions with wrong stuff put into text fields. 
 //Also add info for newly created text fields. Consider popups and shit
 //Put some text into bold
+//repositioning the controls? Is the infoLabel helpful enough?
+//make + - buttons
+//
