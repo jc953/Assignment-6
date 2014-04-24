@@ -86,4 +86,13 @@ public class Arithmetic extends Binary<Expression, Arithmetic.Op> implements
 		return left.equals(a.left) && op.equals(a.op) && right.equals(a.right);
 	}
 
+	@Override
+	public boolean equals(Expression e) {
+		if (e instanceof Arithmetic){
+			Arithmetic temp = dup(e);
+			return equals(temp);
+		} else {
+			return false;
+		}
+	}
 }

@@ -8,5 +8,7 @@ package ast;
 public interface Command extends RichNode {
 
 	Command dup(RichNode dupParent);
+	
+	boolean equals (Command c);
 
 }

@@ -73,4 +73,13 @@ public class Logical extends Binary<Condition, Logical.Op> implements Condition 
 		return left.equals(l.left) && op.equals(l.op) && right.equals(l.right); 
 	}
 
+	@Override
+	public boolean equals(Condition c) {
+		if (c instanceof Logical){
+			Logical temp = dup(c);
+			return equals(temp);
+		} else {
+			return false;
+		}
+	}
 }

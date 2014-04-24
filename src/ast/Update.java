@@ -88,5 +88,14 @@ public class Update extends AbstractNode implements Command {
 	public boolean equals(Update u){
 		return idx.equals(u.idx) && val.equals(u.val); 
 	}
+	
+	public boolean equals(Command c){
+		if (c instanceof Update){
+			Update temp = dup(c);
+			return equals(temp);
+		} else {
+			return false;
+		}
+	}
 
 }

@@ -80,7 +80,12 @@ public class HexPolygon extends Polygon {
 			return imgv;
 		} else if (getCritter() != null){
 			setFill(Color.TRANSPARENT);
-			Image img = new Image("file:src/critter.png");
+			Image img;
+			if (getFood() > 0) {
+				img = new Image("file:src/critterfood.png");
+			} else {
+				img = new Image("file:src/critter.png");
+			}
 			ImageView imgv = new ImageView();
 			imgv.setImage(img);
 			double size = Constants.HEX_LENGTH/1.5 + getCritter().mem[3]*4;
@@ -91,9 +96,24 @@ public class HexPolygon extends Polygon {
 			imgv.setY(y-size/2.0);
 			imgv.setRotate(getCritter().direction*60);
 			ColorAdjust color = new ColorAdjust();
-			double hue = v.hues.get(v.programs.indexOf(getCritter().program));
+			int index = 0;
+			for (int i = 0; i < v.programs.size(); i++){
+				if (v.programs.get(i).equals(getCritter().program)) index = i;
+			}
+			
+			double hue = v.hues.get(index);
 			color.setHue(hue);
 			imgv.setEffect(color);
+			return imgv;
+		} else if (getFood() > 0){
+			setFill(Color.TRANSPARENT);
+			Image img = new Image("file:src/food.png");
+			ImageView imgv = new ImageView();
+			imgv.setImage(img);
+			imgv.setFitHeight(Constants.HEX_LENGTH);
+			imgv.setFitWidth(Constants.HEX_LENGTH);
+			imgv.setX(x-Constants.HEX_LENGTH/2);
+			imgv.setY(y-Constants.HEX_LENGTH/2);
 			return imgv;
 		} else {
 			System.out.println("Cannot draw rock or critter here");

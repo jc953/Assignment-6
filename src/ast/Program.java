@@ -87,7 +87,13 @@ public class Program extends AbstractNode {
 	}
 	
 	public boolean equals(Program p){
-		return rules.equals(p.rules);
+		if (rules.size() != p.rules.size()) return false;
+		for (int i = 0; i < rules.size() && i < p.rules.size(); i++){
+			if (!rules.get(i).equals(p.rules.get(i))){
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

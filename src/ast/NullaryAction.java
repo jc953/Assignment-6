@@ -77,5 +77,14 @@ public class NullaryAction extends AbstractNode implements Action,
 	public boolean equals(NullaryAction n){
 		return op.equals(n.op);
 	}
+	
+	public boolean equals(Command c){
+		if (c instanceof NullaryAction){
+			NullaryAction temp = (NullaryAction) c.dup(c);
+			return equals(temp);
+		} else {
+			return false;
+		}
+	}
 
 }

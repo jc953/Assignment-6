@@ -61,4 +61,16 @@ public class UnaryExpr extends Unary<UnaryExpr.Op> implements Expression {
 		return dup;
 	}
 
+	public boolean equals(UnaryExpr u){
+		return op == u.op && expr.equals(u.expr);
+	}
+	
+	public boolean equals(Expression e){
+		if (e instanceof UnaryExpr){
+			UnaryExpr temp = dup(e);
+			return equals(temp);
+		} else {
+			return false;
+		}
+	}
 }

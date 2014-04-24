@@ -104,4 +104,14 @@ public class Comparison extends Binary<Expression, Comparison.Op> implements
 		return left.equals(c.left) && op.equals(c.op) && right.equals(c.right);
 	}
 
+	@Override
+	public boolean equals(Condition c) {
+		if (c instanceof Comparison){
+			Comparison temp = dup(c);
+			return equals(temp);
+		} else {
+			return false;
+		}
+	}
+
 }

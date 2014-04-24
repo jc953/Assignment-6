@@ -74,5 +74,13 @@ public class NumberLiteral extends AbstractNode implements Expression {
 	public boolean equals(NumberLiteral n){
 		return val == n.val;
 	}
-
+	
+	public boolean equals(Expression e){
+		if (e instanceof NumberLiteral){
+			NumberLiteral temp = dup(e);
+			return equals(temp);
+		} else {
+			return false;
+		}
+	}
 }

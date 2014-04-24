@@ -15,5 +15,6 @@ public interface Expression extends RichNode {
 	int eval(Critter c);
 
 	Expression dup(RichNode dupParent);
-
+	
+	boolean equals(Expression e);
 }

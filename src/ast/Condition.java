@@ -17,5 +17,6 @@ public interface Condition extends RichNode {
 
 	Condition dup(RichNode dupParent);
 	
+	boolean equals(Condition c);
 
 }

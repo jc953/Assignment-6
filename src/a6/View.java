@@ -99,11 +99,12 @@ public class View {
 				for (Program p : programs){
 					if (c.program.equals(p)){
 						exists = true;
+						break;
 					}
 				}
 			if (!exists){
 				programs.add(c.program);
-				hues.add(Math.random());
+				hues.add(Math.random()*2-1);
 			}
 		}
 	}
