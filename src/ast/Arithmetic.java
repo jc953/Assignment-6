@@ -81,5 +81,9 @@ public class Arithmetic extends Binary<Expression, Arithmetic.Op> implements
 	String rightGroup() {
 		return ")";
 	}
+	
+	public boolean equals(Arithmetic a){
+		return left.equals(a.left) && op.equals(a.op) && right.equals(a.right);
+	}
 
 }

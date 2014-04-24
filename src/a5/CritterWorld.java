@@ -143,6 +143,12 @@ public class CritterWorld {
 		hexes[col][row].critter = c;
 		critters.add(c);
 	}
+	
+	public void addCritterHere(int column, int row, String filename){
+		Critter c = new Critter(filename, (int)Math.random()*6, column, row, this);
+		hexes[column][row].critter = c;
+		critters.add(c);
+	}
 
 	/**
 	 * Adds a Critter to the critter list at the given column and row. Mainly

@@ -92,7 +92,13 @@ public class View {
 	
 	public void setColors(){
 		for (Critter c : cw.critters){
-			if (!programs.contains(c.program)){
+			boolean exists = false;
+				for (Program p : programs){
+					if (c.program.equals(p)){
+						exists = true;
+					}
+				}
+			if (!exists){
 				programs.add(c.program);
 				hues.add(Math.random());
 			}

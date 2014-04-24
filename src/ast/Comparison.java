@@ -99,5 +99,9 @@ public class Comparison extends Binary<Expression, Comparison.Op> implements
 	String rightGroup() {
 		return "";
 	}
+	
+	public boolean equals(Comparison c){
+		return left.equals(c.left) && op.equals(c.op) && right.equals(c.right);
+	}
 
 }

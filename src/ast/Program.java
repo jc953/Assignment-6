@@ -85,5 +85,9 @@ public class Program extends AbstractNode {
 	public Program init() {
 		return dup(null);
 	}
+	
+	public boolean equals(Program p){
+		return rules.equals(p.rules);
+	}
 
 }

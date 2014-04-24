@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -28,17 +29,25 @@ public class Controller {
 	Pane warning;
 	Label infoLabel;
 	Label hexSelected;
-	TextField position;
+	TextArea position;
 	String clicked;
 	HexPolygon selected;
+	Label hexCritterInfo;
+	Label hexRockInfo;
+	Label hexFoodInfo;
 	public Controller(View v, CritterWorld cw){
-		this.v = v;
 		this.cw = cw;
+		this.v = v;
 		createWorld();
 		setWorldSteps();
 		createCritters();
 		infoLabel = new Label("");
+		infoLabel.setMinHeight(80.0);
+		infoLabel.setMaxHeight(80.0);
+		v.getVBox().setMinWidth(200.0);
+		v.getVBox().setMaxWidth(200.0);
 		v.getVBox().getChildren().add(infoLabel);
+		hexSelection();
 		hexControls();
 		
 	}
@@ -80,7 +89,7 @@ public class Controller {
 		b.setOnMouseEntered(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent _){
-				infoLabel.setText("Loads the world from the file \n specified below");
+				infoLabel.setText("Loads the world from the file \nspecified below");
 			}
 		});
 		
@@ -190,8 +199,8 @@ public class Controller {
 					infoLabel.setText("Stops automatic advancement");
 				}
 				else{
-					infoLabel.setText("Advances the world continuously at a rate"
-							+ " \n of one step per second");
+					infoLabel.setText("Advances the world \ncontinuously at a rate"
+							+ " of \none step per second");
 				}
 			}
 		});
@@ -246,8 +255,8 @@ public class Controller {
 		b.setOnMouseEntered(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent _){
-				infoLabel.setText("Loads the number of critters specified "
-						+ "\nbelow from file specified below");
+				infoLabel.setText("Loads the number of critters \nspecified "
+						+ "below from file \nspecified below");
 			}
 		});
 		
@@ -261,7 +270,7 @@ public class Controller {
 		t1.setOnMouseEntered(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent _){
-				infoLabel.setText("The number of critters to generate");
+				infoLabel.setText("The number of critters to \ngenerate");
 			}
 		});
 		
@@ -275,7 +284,7 @@ public class Controller {
 		t2.setOnMouseEntered(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent _){
-				infoLabel.setText("the file to generate the critters from");
+				infoLabel.setText("the file to generate the \ncritters from");
 			}
 		});
 		
@@ -320,10 +329,12 @@ public class Controller {
 		
 	}
 	
-	void hexControls(){
+	void hexSelection(){
 		hexSelected = new Label("Hex Selected:");
-		position = new TextField("Enter: (column, row) of desired Hex,"
+		position = new TextArea("Enter: (column, row) \nof desired Hex, \n"
 				+ "or click on desired Hex");
+		position.setPrefColumnCount(3);
+		position.setPrefHeight(80.0);
 		v.getVBox().getChildren().add(hexSelected);
 		v.getVBox().getChildren().add(position);
 		clicked = "";
@@ -331,7 +342,7 @@ public class Controller {
 			@Override
 			public void handle(MouseEvent _){
 				if(clicked == ""){
-					position.setText("Enter: (column, row) of desired Hex,"
+					position.setText("Enter: (column, row) \nof desired Hex, \n"
 							+ "or click on desired Hex");
 				}
 				else{
@@ -355,11 +366,9 @@ public class Controller {
 					clicked = "("+h.column+","+h.row+")";
 					position.setText(clicked);
 					if(selected != null){
-						selected.setFill(h.getFill());
 						selected.setStroke(h.getStroke());
 					}
 					if(h.equals(selected)){
-						h.setFill(Color.ANTIQUEWHITE);
 						h.setStroke(Color.BLACK);
 						clicked = "";
 						selected = null;
@@ -367,7 +376,6 @@ public class Controller {
 					else{
 						selected = h;
 						h.setStroke(Color.RED);
-						h.setFill(Color.BLUE);
 					}
 				}
 			});
@@ -387,5 +395,59 @@ public class Controller {
 		//do functionality of typing row,column instead of selecting
 		
 	}
-
+	
+	void hexControls(){
+		if (selected == null) return;
+		if(selected.isRock()){
+			hexRockInfo = new Label("Hex Information:\nThis is a rock");
+			v.getVBox().getChildren().add(hexRockInfo);
+			return;
+		}
+		hexRockInfo = new Label("Hex Information:");
+		hexFoodInfo = new Label("Food value: " + selected.getFood());
+		if (selected.getCritter() == null){
+			hexCritterInfo = new Label("There is no critter\ncurrently inhabiting\nthis hex");
+			v.getVBox().getChildren().addAll(hexRockInfo, hexFoodInfo, hexCritterInfo);
+			Button b = new Button("Load a Critter in this \nhex"
+					+ "from file:");
+			final TextField t1 = new TextField();
+			v.getVBox().getChildren().addAll(b, t1);
+			
+			b.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+	            public void handle(ActionEvent _) {
+					if(t1.getText()!= null){
+					cw.addCritterHere(selected.column, selected.arrRow, t1.getText());
+					t1.setText("");
+					critterLabel.setText("Critters Alive: " + cw.critters.size());
+					displayCritterInfo();
+					}
+					else{
+						warning("Please Supply Text");
+					}
+				}
+			});			
+			return;
+		}
+		else{
+			displayCritterInfo();
+		}
+	}
+	
+	void displayCritterInfo(){
+		hexCritterInfo = new Label("Critter Vital Statistics:");
+		v.getVBox().getChildren().addAll(hexRockInfo, hexFoodInfo, hexCritterInfo,
+				new Label("Memory size: " + selected.getCritter().mem[0]), 
+				new Label("Defensive ability: " + selected.getCritter().mem[1]), 
+				new Label("Offensive ability: " + selected.getCritter().mem[2]), 
+				new Label("Size: " + selected.getCritter().mem[3]), 
+				new Label("Energy: " + selected.getCritter().mem[4]), 
+				new Label("Pass value: " + selected.getCritter().mem[5]), 
+				new Label("Tag value: " + selected.getCritter().mem[6]), 
+				new Label("Posture value: " + selected.getCritter().mem[7]));
+		for(int i = 8; i < selected.getCritter().mem.length;i++){
+			v.getVBox().getChildren().add(new Label("mem["+i+"]: "+ selected.getCritter().mem[i]));
+		}
+		return;
+	}
 }

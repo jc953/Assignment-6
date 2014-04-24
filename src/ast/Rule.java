@@ -159,5 +159,9 @@ public class Rule extends AbstractNode {
 		dup.must = must.dup(dup);
 		return dup;
 	}
+	
+	public boolean equals(Rule r){
+		return condition.equals(r.condition) && updates.equals(r.updates) && must.equals(r.must);
+	}
 
 }

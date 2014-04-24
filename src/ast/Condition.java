@@ -16,5 +16,6 @@ public interface Condition extends RichNode {
 	boolean eval(Critter c);
 
 	Condition dup(RichNode dupParent);
+	
 
 }

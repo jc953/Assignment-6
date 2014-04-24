@@ -70,5 +70,9 @@ public class NumberLiteral extends AbstractNode implements Expression {
 		dup.setParent(dupParent);
 		return dup;
 	}
+	
+	public boolean equals(NumberLiteral n){
+		return val == n.val;
+	}
 
 }

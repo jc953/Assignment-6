@@ -68,5 +68,9 @@ public class Logical extends Binary<Condition, Logical.Op> implements Condition 
 	String rightGroup() {
 		return "}";
 	}
+	
+	public boolean equals(Logical l){
+		return left.equals(l.left) && op.equals(l.op) && right.equals(l.right); 
+	}
 
 }
