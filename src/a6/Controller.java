@@ -31,8 +31,9 @@ public class Controller {
 	TextField position;
 	String clicked;
 	HexPolygon selected;
-	public Controller(View v){
+	public Controller(View v, CritterWorld cw){
 		this.v = v;
+		this.cw = cw;
 		createWorld();
 		setWorldSteps();
 		createCritters();
@@ -53,7 +54,7 @@ public class Controller {
 		b2.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
             public void handle(ActionEvent _) {
-				cw = new CritterWorld(true);
+				cw = new CritterWorld();
 		        stepLabel.setText("Steps Advanced: " + cw.steps);
 				critterLabel.setText("Critters Alive: " + cw.critters.size());
 				cw.update(v);

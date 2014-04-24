@@ -15,8 +15,9 @@ public class Main extends Application {
 	@Override
 	public void start(Stage s) throws Exception {
 		Constants.read("src/constants.txt");
-		v = new View(s);
-		c = new Controller(v);
+		CritterWorld cw = new CritterWorld();
+		v = new View(s, cw);
+		c = new Controller(v, cw);
 		s.show();
 	}
 	

@@ -36,7 +36,7 @@ public class CritterWorldTest {
 	@Test
 	public void testB() {
 		Constants.read("src/constants.txt");
-		CritterWorld cw = new CritterWorld(true);
+		CritterWorld cw = new CritterWorld();
 		int numberRocks = cw.hexes.length * cw.hexes[0].length / 10;
 		int count = 0;
 		for (int i = 0; i < cw.hexes.length; i++) {

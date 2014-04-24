@@ -12,6 +12,7 @@ import javafx.scene.shape.Polygon;
 public class HexPolygon extends Polygon {
 	int column, row, arrRow;
 	View v;
+	double x, y;
 	
 	public HexPolygon(double a, double b, double c, double d, double e, double f, 
 			double g, double h, double i, double j, double k, double l, int col, int row, View v){
@@ -23,6 +24,11 @@ public class HexPolygon extends Polygon {
 		setStroke(Color.BLACK);
 		setFill(Color.ANTIQUEWHITE);
 		setupEventHandlers();
+	}
+	
+	public void setCenter(double x, double y){
+		this.x = x;
+		this.y = y;
 	}
 	
 	private void setupEventHandlers(){
@@ -39,41 +45,40 @@ public class HexPolygon extends Polygon {
 		});
 	}
 	
-	public void draw(){
+	public boolean hasObject(){
+		return v.getCritterWorld().hexes[column][arrRow].rock || v.getCritterWorld().hexes[column][arrRow].critter != null;
+	}
+	
+	public void reset(){
+		setFill(Color.ANTIQUEWHITE);
+	}
+	
+	public ImageView draw(){
 		if (v.getCritterWorld().hexes[column][arrRow].rock){
 			setFill(Color.WHITE);
 			Image img = new Image("file:src/rock.png");
 			ImageView imgv = new ImageView();
 			imgv.setImage(img);
-			imgv.setX(column*30);
-			imgv.setY(arrRow*30);
-			v.world.getChildren().add(imgv);
+			imgv.setFitHeight(40);
+			imgv.setFitWidth(40);
+			imgv.setX(x-20);
+			imgv.setY(y-20);
+			imgv.setRotate(Math.random()*360);
+			return imgv;
 		} else if (v.getCritterWorld().hexes[column][arrRow].critter != null){
 			setFill(Color.WHITE);
-			Image img;
-			switch (v.getCritterWorld().hexes[column][arrRow].critter.direction){
-			case 1: 
-				img = new Image("file:src/critter1.png");
-				break;
-			case 2: 
-				img = new Image("file:src/critter2.png");
-				break;
-			case 3: 
-				img = new Image("file:src/critter3.png");
-				break;
-			case 4: 
-				img = new Image("file:src/critter4.png");
-				break;
-			case 5: 
-				img = new Image("file:src/critter5.png");
-				break;
-			default:
-				img = new Image("file:src/critter.png");
-				break;
-			}
-			setFill(new ImagePattern(img));
+			Image img = new Image("file:src/critter.png");
+			ImageView imgv = new ImageView();
+			imgv.setImage(img);
+			imgv.setFitHeight(40);
+			imgv.setFitWidth(40);
+			imgv.setX(x-20);
+			imgv.setY(y-20);
+			imgv.setRotate(v.getCritterWorld().hexes[column][arrRow].critter.direction*60);
+			return imgv;
 		} else {
-			setFill(Color.ANTIQUEWHITE);
+			System.out.println("Cannot draw rock or critter here");
+			return null;
 		}
 	}	
 }

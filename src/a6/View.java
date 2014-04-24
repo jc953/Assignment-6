@@ -27,16 +27,16 @@ public class View {
 	private double hA = 20*Math.pow(3, 0.5);
 	private int diff = 4;
 	private CritterWorld cw;
+	private Pane actors;
 
-	public View(Stage s) {
+	public View(Stage s, CritterWorld cw) {
 		g = new Group();
 		Scene scene = new Scene(g);
 		s.setScene(scene);
 		s.setWidth(width);
 		s.setHeight(height);
 		hexes = new ArrayList<HexPolygon>();
-		cw = new CritterWorld(false);
-		
+		this.cw = cw;
 		BorderPane border = new BorderPane();
 		world = new Pane();
 		world.setPrefWidth(Constants.MAX_COLUMN*hL*3/2+Constants.MAX_COLUMN*diff + hL/2);
@@ -52,10 +52,13 @@ public class View {
 				}
 				HexPolygon p = new HexPolygon(hL/2+x+diff*i, y+diff*j, hL*3/2+x+diff*i, y+diff*j, hL*2+x+diff*i, hA+y+diff*j,
 						hL*3/2+x+diff*i, hA*2+y+diff*j, hL/2+x+diff*i, hA*2+y+diff*j, x+diff*i, hA+y+diff*j, i, Constants.MAX_ARRAY_ROW-j-1, this);
+				p.setCenter(hL+x+diff*i, hA+y+diff*j);
 				world.getChildren().add(p);
 				hexes.add(p);
 			}
 		}
+		actors = new Pane();
+		world.getChildren().add(actors);
 		ScrollPane sp = new ScrollPane();
 		sp.setContent(world);
 		sp.setPrefSize(850,850);
@@ -63,12 +66,19 @@ public class View {
 		border.setLeft(sp);
 		border.setRight(vbox);
 		g.getChildren().add(border);
+		update(cw);
 	}
 	
 	public void update(CritterWorld cw){
 		this.cw = cw;
+		world.getChildren().remove(actors);
+		actors = new Pane();
+		world.getChildren().add(actors);
 		for (HexPolygon h : hexes){
-			h.draw();
+			h.reset();
+			if (h.hasObject()){
+				actors.getChildren().add(h.draw());
+			}
 		}
 	}
 

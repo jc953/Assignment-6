@@ -56,7 +56,7 @@ public class CritterWorld {
 	 * of randomly generated rocks is determined by the total number of hexes 
 	 * in the world.
 	 */
-	public CritterWorld(boolean rocks){
+	public CritterWorld(){
 		hexes = new Hex[Constants.MAX_COLUMN][Constants.MAX_ARRAY_ROW];
 		for (int i = 0; i < hexes.length; i++){
 			for (int j = 0; j < hexes[0].length; j++){
@@ -64,19 +64,18 @@ public class CritterWorld {
 			}
 		}
 		critters = new ArrayList<Critter>();
-		steps = 0;
-		if (rocks){
-			int numberRocks = Constants.MAX_COLUMN*Constants.MAX_ARRAY_ROW/20;
-			for (int i = 0; i < numberRocks; i++){
-				int col = (int)(Math.random() * hexes.length);
-				int row = (int)(Math.random() * hexes[0].length);
-				while (hexes[col][row].rock){
-					col = (int)(Math.random() * hexes.length);
-					row = (int)(Math.random() * hexes[0].length);
-				}
-				hexes[col][row].rock = true;
+		steps = 0;		
+		int numberRocks = Constants.MAX_COLUMN*Constants.MAX_ARRAY_ROW/30;
+		for (int i = 0; i < numberRocks; i++){
+			int col = (int)(Math.random() * hexes.length);
+			int row = (int)(Math.random() * hexes[0].length);
+			while (hexes[col][row].rock){
+				col = (int)(Math.random() * hexes.length);
+				row = (int)(Math.random() * hexes[0].length);
 			}
+			hexes[col][row].rock = true;
 		}
+		
 	}
 	
 	/**

@@ -62,7 +62,7 @@ public class Console {
 	 * Starts new random world simulation
 	 */
 	private void newWorld() {
-		cw = new CritterWorld(true);
+		cw = new CritterWorld();
 	}
 
 	/**
