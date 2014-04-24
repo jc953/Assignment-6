@@ -41,9 +41,15 @@ public class HexPolygon extends Polygon {
 	
 	public void draw(){
 		if (v.getCritterWorld().hexes[column][arrRow].rock){
+			setFill(Color.WHITE);
 			Image img = new Image("file:src/rock.png");
-			setFill(new ImagePattern(img));
+			ImageView imgv = new ImageView();
+			imgv.setImage(img);
+			imgv.setX(column*30);
+			imgv.setY(arrRow*30);
+			v.world.getChildren().add(imgv);
 		} else if (v.getCritterWorld().hexes[column][arrRow].critter != null){
+			setFill(Color.WHITE);
 			Image img;
 			switch (v.getCritterWorld().hexes[column][arrRow].critter.direction){
 			case 1: 

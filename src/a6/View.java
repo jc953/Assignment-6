@@ -18,14 +18,14 @@ import javafx.stage.Stage;
 
 public class View {
 	private Group g;
-	private final Pane world;
+	protected final Pane world;
 	private Pane vbox;
 	private ArrayList<HexPolygon> hexes;
 	private int width = 1200;
 	private int height = 900;
-	private int hL = 50;
-	private double hA = 25*Math.pow(3, 0.5);
-	private int diff = 5;
+	private int hL = 40;
+	private double hA = 20*Math.pow(3, 0.5);
+	private int diff = 4;
 	private CritterWorld cw;
 
 	public View(Stage s) {
