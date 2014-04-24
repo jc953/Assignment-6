@@ -5,8 +5,6 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-	private View v;
-	private Controller c;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -16,8 +14,8 @@ public class Main extends Application {
 	public void start(Stage s) throws Exception {
 		Constants.read("src/constants.txt");
 		CritterWorld cw = new CritterWorld();
-		v = new View(s, cw);
-		c = new Controller(v, cw);
+		View v = new View(s, cw);
+		Controller c = new Controller(v, cw);
 		s.show();
 	}
 	
