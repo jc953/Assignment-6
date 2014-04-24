@@ -4,11 +4,14 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -23,10 +26,10 @@ public class Controller {
 	View v;
 	CritterWorld cw;
 	Label critterLabel;
-	Pane warning;
+	VBox warning;
 	Label infoLabel;
 	Label hexSelected;
-	TextField position;
+	Label position;
 	String clicked;
 	HexPolygon selected;
 	Label hexCritterInfo;
@@ -55,7 +58,7 @@ public class Controller {
 	
 	void createWorld(){
 		Button b = new Button("Load World");
-		final TextField t = new TextField();
+		final TextField t = new TextField("");
 		Button b2 = new Button("Load Random World");
 		v.getVBox().getChildren().add(b);
 		v.getVBox().getChildren().add(t);
@@ -74,14 +77,14 @@ public class Controller {
 		b.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
             public void handle(ActionEvent _) {
-				if(t.getText()!= null){
+				if(!t.getText().equals("")){
 					cw = new CritterWorld(t.getText());
 					t.setText("");
 			        stepLabel.setText("Steps Advanced: " + cw.steps);
 					critterLabel.setText("Critters Alive: " + cw.critters.size());
 				}
 				else{
-					warning("Please supply text");
+					warning("Please supply text!");
 				}
 				cw.update(v);
             }
@@ -139,6 +142,7 @@ public class Controller {
 		stepLabel = new Label("Steps Advanced: 0");
 		stepLabel.setFont(Font.font("Copperplate Gothic Bold",14));
 		critterLabel = new Label("Critters Alive: 0");
+		critterLabel.setFont(Font.font("Copperplate Gothic Bold", 14));
 		final Button b2 = new Button("Set step speed to: ");
 		final TextField t = new TextField();
 		t.setMaxWidth(50.0); 
@@ -179,11 +183,11 @@ public class Controller {
 						}));
 					}
 					else{
-						warning("Please Supply Text!");
+						warning("Please supply text!");
 					}
 				}
 				catch (NumberFormatException nfe){
-					warning("Please give a number in the correct format");
+					warning("Please give a number \nin the correct format!");
 				}
 			}
 		});
@@ -193,7 +197,7 @@ public class Controller {
             public void handle(ActionEvent _) {
 				if (cw != null) step();
 				else{
-					warning("Please load a world");
+					warning("Please load a world!");
 				}
 				cw.update(v);
             }
@@ -281,11 +285,11 @@ public class Controller {
 						critterLabel.setText("Critters Alive: " + cw.critters.size());
 					}
 					else{
-						warning("Please Supply Text!");
+						warning("Please supply text!");
 					}
 				}
 				catch (NumberFormatException nfe){
-					warning("Please give a number in the correct format");
+					warning("Please give a number \nin the correct format");
 				}
 				cw.update(v);
             }
@@ -337,27 +341,28 @@ public class Controller {
 	
 	void warning(String w){
 		warning = new VBox();
-		warning.setPrefSize(400,400);
-		Button ok = new Button("Ok");
-		ok.setOnMouseEntered(new EventHandler<MouseEvent>(){
+		warning.setAlignment(Pos.TOP_CENTER);
+		Button ok = new Button("OK");
+		
+		warning.setOnMouseEntered(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent _){
-				infoLabel.setText("Click to dismiss window");
+				infoLabel.setText("Click OK to dismiss window");
 			}
 		});
-		ok.setPrefWidth(150);
+		ok.setPrefWidth(75);
 		Label warn = new Label(w);
-		warning.getChildren().add(ok);
-		warning.getChildren().add(warn);
-        final Stage s1 = new Stage();
+		Image img = new Image("file:src/sad_ladybug.png");
+		ImageView imgv = new ImageView();
+		imgv.setImage(img);
+		warning.getChildren().addAll(warn,ok,imgv);
+		final Stage s1 = new Stage();
         Group g = new Group();
         g.getChildren().add(warning);
         Scene scene = new Scene(g);
         s1.setScene(scene);
-        s1.setWidth(600);
-        s1.setHeight(200);
-        s1.setX(450);
-        s1.setY(450);
+        s1.setWidth(150);
+        s1.setHeight(230);
         s1.show();
 		ok.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
@@ -370,7 +375,7 @@ public class Controller {
 	
 	void hexSelection(){
 		hexSelected = new Label("Hex Selected:");
-		position = new TextField("click on desired Hex");
+		position = new Label("click on desired Hex");
 		v.getVBox().getChildren().add(hexSelected);
 		v.getVBox().getChildren().add(position);
 		clicked = "";
@@ -438,17 +443,19 @@ public class Controller {
 		if (selected == null) return;
 		hexBox = new VBox();
 		if(selected.isRock()){
-			hexRockInfo = new Label("Hex Information:\nThis is a rock");
-			hexBox.getChildren().add(hexRockInfo);
+			hexRockInfo = new Label("Hex Information:");
+			hexRockInfo.setFont(Font.font("Copperplate Gothic Bold", 14));
+			hexBox.getChildren().addAll(hexRockInfo, new Label ("This hex is a rock"));
 			v.getVBox().getChildren().add(hexBox);
 			return;
 		}
 		hexRockInfo = new Label("Hex Information:");
+		hexRockInfo.setFont(Font.font("Copperplate Gothic Bold", 14));
 		hexFoodInfo = new Label("Food value: " + selected.getFood());
 		if (selected.getCritter() == null){
-			hexCritterInfo = new Label("There is no critter\ncurrently inhabiting\nthis hex");
+			hexCritterInfo = new Label("There is no critter\ncurrently inhabiting\nthis hex, but...");
 			hexBox.getChildren().addAll(hexRockInfo, hexFoodInfo, hexCritterInfo);
-			Button b = new Button("Load a Critter in \nthis hex"
+			Button b = new Button("You can add one! From\n"
 					+ " from file:");
 			final TextField t1 = new TextField();
 			hexBox.getChildren().addAll(b, t1);
@@ -465,7 +472,7 @@ public class Controller {
 					hexControls();
 					}
 					else{
-						warning("Please Supply Text");
+						warning("Please Supply Text!");
 					}
 				}
 			});			
@@ -477,6 +484,7 @@ public class Controller {
 	void displayCritterInfo(){
 		if(selected.getCritter() == null) return;
 		hexCritterInfo = new Label("Critter Vital Statistics:");
+		hexCritterInfo.setFont(Font.font("Copperplate Gothic Bold", 14));
 		hexBox.getChildren().addAll(hexRockInfo, hexFoodInfo, hexCritterInfo,
 				new Label("Memory size: " + selected.getCritter().mem[0]), 
 				new Label("Defensive ability: " + selected.getCritter().mem[1]), 
@@ -508,7 +516,6 @@ public class Controller {
 	}
 }//add warnings and conditions with wrong stuff put into text fields. 
 //Also add info for newly created text fields. Consider popups and shit
-//Put some text into bold
 //repositioning the controls? Is the infoLabel helpful enough?
 //make + - buttons
 //
