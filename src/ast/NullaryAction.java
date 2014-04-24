@@ -73,5 +73,9 @@ public class NullaryAction extends AbstractNode implements Action,
 	public void setOp(Op op) {
 		this.op = op;
 	}
+	
+	public boolean equals(NullaryAction n){
+		return op.equals(n.op);
+	}
 
 }

@@ -68,7 +68,7 @@ public class HexPolygon extends Polygon {
 	
 	public ImageView draw(){
 		if (isRock()){
-			setFill(Color.WHITE);
+			setFill(Color.TRANSPARENT);
 			Image img = new Image("file:src/rock.png");
 			ImageView imgv = new ImageView();
 			imgv.setImage(img);
@@ -79,7 +79,7 @@ public class HexPolygon extends Polygon {
 			imgv.setRotate(Math.random()*360);
 			return imgv;
 		} else if (getCritter() != null){
-			setFill(Color.WHITE);
+			setFill(Color.TRANSPARENT);
 			Image img = new Image("file:src/critter.png");
 			ImageView imgv = new ImageView();
 			imgv.setImage(img);

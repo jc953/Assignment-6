@@ -11,12 +11,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class View {
 	private Group g;
-	protected final Pane world;
+	protected final StackPane world;
 	private Pane vbox;
 	private ArrayList<HexPolygon> hexes;
 	private int width;
@@ -26,6 +27,7 @@ public class View {
 	private int diff;
 	private CritterWorld cw;
 	private Pane actors;
+	private Pane hexesPane;
 	ArrayList<Program> programs;
 	ArrayList<Double> hues;
 
@@ -45,9 +47,10 @@ public class View {
 		hexes = new ArrayList<HexPolygon>();
 		this.cw = cw;
 		BorderPane border = new BorderPane();
-		world = new Pane();
+		world = new StackPane();
 		world.setPrefWidth(Constants.MAX_COLUMN*hL*3/2+Constants.MAX_COLUMN*diff + hL/2);
 		world.setPrefHeight(Constants.MAX_ARRAY_ROW*hA*2+Constants.MAX_ARRAY_ROW*diff+hA);
+		hexesPane = new Pane();
 		for(int i = 0; i < Constants.MAX_COLUMN; i++){
 			for (int j = 0; j < Constants.MAX_ARRAY_ROW; j++){
 				int x = i * hL*3/2;
@@ -60,12 +63,12 @@ public class View {
 				HexPolygon p = new HexPolygon(hL/2+x+diff*i, y+diff*j, hL*3/2+x+diff*i, y+diff*j, hL*2+x+diff*i, hA+y+diff*j,
 						hL*3/2+x+diff*i, hA*2+y+diff*j, hL/2+x+diff*i, hA*2+y+diff*j, x+diff*i, hA+y+diff*j, i, Constants.MAX_ARRAY_ROW-j-1, this);
 				p.setCenter(hL+x+diff*i, hA+y+diff*j);
-				world.getChildren().add(p);
+				hexesPane.getChildren().add(p);
 				hexes.add(p);
 			}
 		}
 		actors = new Pane();
-		world.getChildren().add(actors);
+		world.getChildren().addAll(actors, hexesPane);
 		ScrollPane sp = new ScrollPane();
 		sp.setContent(world);
 		sp.setPrefSize(850,850);
@@ -78,9 +81,9 @@ public class View {
 	
 	public void update(CritterWorld cw){
 		this.cw = cw;
-		world.getChildren().remove(actors);
+		world.getChildren().removeAll(actors, hexesPane);
 		actors = new Pane();
-		world.getChildren().add(actors);
+		world.getChildren().addAll(actors, hexesPane);
 		setColors();
 		for (HexPolygon h : hexes){
 			h.reset();

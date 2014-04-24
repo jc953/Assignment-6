@@ -46,5 +46,9 @@ public class UnaryAction extends Unary<UnaryAction.Op> implements Action {
 		dup.expr = expr.dup(dup);
 		return dup;
 	}
+	
+	public boolean equals(UnaryAction u){
+		return op.equals(u.op);
+	}
 
 }
