@@ -410,7 +410,6 @@ public class Controller {
 			public void handle(MouseEvent _){
 				infoLabel.setText("Hover cursor over a command "
 						+ "\nand watch this space for help");
-				if(t1.getText().equals("")) t1.setText("type number of critters desired");
 			}
 		});
 		
@@ -427,7 +426,6 @@ public class Controller {
 			public void handle(MouseEvent _){
 				infoLabel.setText("Hover cursor over a command "
 						+ "\nand watch this space for help");
-				if(t2.getText().equals("")) t2.setText("type file to load critter from");
 			}
 		});
 	}
@@ -778,6 +776,7 @@ public class Controller {
             public void handle(ActionEvent _) {
 				selected.getCritter().step();
 				cw.update(v);
+				deselect();
 				s.close();
             }
         });
