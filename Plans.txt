@@ -1,3 +1,6 @@
-Each Hex is a Pane.
 
-Then have a big pane on the right with all the information and buttons.
+-selecting a node and pressing step does not update the hex info
+
+-let them click on a critter on do a certain action
+
+-fix last rule
