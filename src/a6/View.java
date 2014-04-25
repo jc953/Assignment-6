@@ -31,10 +31,14 @@ public class View {
 	private Pane actors;
 	private Pane hexesPane;
 	private Polygon background;
+	private ScrollPane sp;
 	ArrayList<Program> programs;
 	ArrayList<Double> hues;
+	
+	int temp;
 
 	public View(Stage s, CritterWorld cw) {
+		temp = 0;
 		width = Constants.SCENE_WIDTH;
 		height = Constants.SCENE_HEIGHT;
 		hL = Constants.HEX_LENGTH;
@@ -76,7 +80,7 @@ public class View {
 		}
 		actors = new Pane();
 		world.getChildren().addAll(background, actors, hexesPane);
-		ScrollPane sp = new ScrollPane();
+		sp = new ScrollPane();
 		sp.setContent(world);
 		sp.setPrefSize(Constants.SCROLL_PANE_LENGTH,Constants.SCROLL_PANE_LENGTH);
 		vbox = new VBox();
@@ -87,11 +91,11 @@ public class View {
 		update(cw);
 	}
 	
-	public void update(CritterWorld cw){
+	public void update(CritterWorld cw){ 
 		this.cw = cw;
-		world.getChildren().removeAll(actors, hexesPane);
+		world.getChildren().remove(actors);
 		actors = new Pane();
-		world.getChildren().addAll(actors, hexesPane);
+		world.getChildren().add(actors);
 		setColors();
 		for (HexPolygon h : hexes){
 			h.reset();
@@ -130,7 +134,7 @@ public class View {
 		hL = Constants.HEX_LENGTH;
 		hA = Constants.HEX_APOTHEM;
 		diff = Constants.HEX_DIFF;
-		world = new StackPane();
+		world.getChildren().removeAll(background, actors, hexesPane);
 		double width = Constants.MAX_COLUMN*hL*3/2+Constants.MAX_COLUMN*diff + hL/2;
 		double height = Constants.MAX_ARRAY_ROW*hA*2+Constants.MAX_ARRAY_ROW*diff+hA;
 		world.setPrefWidth(width);
@@ -138,6 +142,7 @@ public class View {
 		background = new Polygon(0,0, width, 0, width, height, 0, height);
 		background.setFill(Color.WHITE);
 		hexesPane = new Pane();
+		hexes = new ArrayList<HexPolygon>();
 		for(int i = 0; i < Constants.MAX_COLUMN; i++){
 			for (int j = 0; j < Constants.MAX_ARRAY_ROW; j++){
 				int x = i * hL*3/2;
