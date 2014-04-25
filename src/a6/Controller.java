@@ -40,10 +40,17 @@ public class Controller {
 	VBox hexBox;
 	Timeline timeline;
 	StringBuffer sb;
+	/**
+	 * Constructor for Controller. 
+	 * This method builds and coordinates the different components
+	 * of the Controller.
+	 * @param v The View of this program
+	 * @param cw The current CritterWorld
+	 */
 	public Controller(View v, CritterWorld cw){
 		this.cw = cw;
 		this.v = v;
-		v.getVBox().setSpacing(5.0);
+		v.getVBox().setSpacing(3.5);
 		speed = 1000;
 		infoLabel = new Label("Hover cursor over a command "
 				+ "\nand watch this space for help");
@@ -66,7 +73,12 @@ public class Controller {
 		
 		
 	}
-	
+	/**
+	 * Method to create the controls for loading a world and advancing its
+	 * steps
+	 * Gives information about the world state
+	 * Gives controls that allow users to create new worlds and critters
+	 */
 	void createWorld(){
 		stepLabel = new Label("Steps Advanced: 0");
 		stepLabel.setFont(Font.font("Copperplate Gothic Bold",14));
@@ -156,7 +168,11 @@ public class Controller {
 		
 		
 	}
-	
+	/**
+	 * Method to create controls for stepping the world
+	 * Gives controls that allows the user to step the world
+	 * at different rates
+	 */
 	void setWorldSteps(){
 		Button b = new Button("Step Once");
 		final Button b1 = new Button("Step Continuously");
@@ -298,8 +314,8 @@ public class Controller {
 					infoLabel.setText("Stops automatic advancement");
 				}
 				else{
-					infoLabel.setText("Advances the world \ncontinuously at rate defined"
-							+ " or \nby default, one step per second");
+					infoLabel.setText("Advances the world \ncontinuously at rate defined\n"
+							+ " or by default, one \nstep per second");
 				}
 			}
 		});
@@ -312,18 +328,24 @@ public class Controller {
 			}
 		});
 	}
-	
+	/**
+	 * Method to step the world one step
+	 */
 	void step(){
 		cw.step();
         stepLabel.setText("Steps Advanced: " + cw.steps);
         critterLabel.setText("Critters Alive: " + cw.critters.size());
 		deselect();
 	}
-	
+	/**
+	 * Method to create controls for creating critters
+	 * Gives user controls to create different numbers of critters
+	 * from different files
+	 */
 	void createCritters(){
-		Button b = new Button("Load");
-		final TextField t1 = new TextField("number of critters desired");
-		final TextField t2 = new TextField("type file to load critter from");
+		Button b = new Button("Load Critters");
+		final TextField t1 = new TextField("");
+		final TextField t2 = new TextField("");
 		v.getVBox().getChildren().addAll(b, t1,t2);
 		
 		b.setOnAction(new EventHandler<ActionEvent>() {
@@ -339,8 +361,8 @@ public class Controller {
 								warning("The file you specified was\nin the wrong format!");
 							}
 						}
-						t1.setText("type number of critters desired");
-						t2.setText("type file to load critter from");
+						t1.setText("");
+						t2.setText("");
 						critterLabel.setText("Critters Alive: " + cw.critters.size());
 					}
 					else{
@@ -404,7 +426,10 @@ public class Controller {
 			}
 		});
 	}
-	
+	/**
+	 * Method to generate warning for the user
+	 * @param w the message displayed in the warning
+	 */
 	void warning(String w){
 		warning = new VBox();
 		warning.setAlignment(Pos.TOP_CENTER);
@@ -432,7 +457,11 @@ public class Controller {
 		});
 		
 	}
-	
+	/**
+	 * Method to create controls for selecting and manipulating hexes
+	 * Gives user information about currently selected hex
+	 * Gives user controls to select a hex
+	 */
 	void hexSelection(){
 		v.getWorld().setOnMouseExited(new EventHandler<MouseEvent>(){
 			@Override
@@ -491,6 +520,12 @@ public class Controller {
 		cw.update(v);
 	}
 	
+	/**
+	 * Method to create controls and display information for
+	 * currently selected hex
+	 * Gives user information about currently selected hex
+	 * Gives user controls to manipulate currently selected hex
+	 */
 	void hexControls(){
 		if (selected == null) return;
 		hexBox = new VBox();
@@ -569,6 +604,13 @@ public class Controller {
 		displayCritterInfo();
 	}
 	
+	
+	/**
+	 * Method to create controls and display information for
+	 * critter on currently selected hex
+	 * Gives user information about critter on currently selected hex
+	 * Gives user controls to manipulate critter
+	 */
 	void displayCritterInfo(){
 		if(selected.getCritter() == null) return;
 		hexCritterInfo = new Label("Critter Vital Statistics:");
@@ -645,6 +687,10 @@ public class Controller {
 		v.getVBox().getChildren().add(hexBox);
 	}
 	
+	
+	/**
+	 * Method to give user control over zoom of current view
+	 */
 	void zoomSettings(){
 		HBox zoom = new HBox();
 		Label l = new Label("Zoom options: ");
@@ -696,12 +742,30 @@ public class Controller {
 
 		
 	}
-	
+	/**
+	 * Helper method when deselecting any hex
+	 */
 	void removeHexBox(){
 		v.getVBox().getChildren().remove(hexBox);
 		hexBox = new VBox();
 	}
-	
+	/**
+	 * Method to give user control of a particular critter's actions
+	 * @param step Button that gives user control over a critter action
+	 * @param wait Button that gives user control over a critter action
+	 * @param move1 Button that gives user control over a critter action 
+	 * @param move2 Button that gives user control over a critter action
+	 * @param turn1 Button that gives user control over a critter action
+	 * @param turn2 Button that gives user control over a critter action
+	 * @param eat Button that gives user control over a critter action
+	 * @param attack Button that gives user control over a critter action
+	 * @param grow Button that gives user control over a critter action
+	 * @param bud Button that gives user control over a critter action
+	 * @param mate Button that gives user control over a critter action
+	 * @param serve Button that gives user control over a critter action
+	 * @param serveA TextField that gives user control over a critter action
+	 * @param s1 Stage to display critter actions to user
+	 */
 	void controlCritters(Button step,Button wait,Button move1,Button move2,Button turn1, 
 			Button turn2,Button eat,Button attack,Button grow,Button bud,Button mate, Button serve
 			, TextField serveA, Stage s1){
@@ -850,7 +914,9 @@ public class Controller {
 			}
 		});
 	}
-	
+	/**
+	 * Method to deselect a hex
+	 */
 	void deselect(){
 		if(selected == null) return;
 		selected.setStroke(Color.BLACK);

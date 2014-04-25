@@ -10,6 +10,9 @@ public class Main extends Application {
 		launch(args);
 	}
 
+	/**
+	 * Method to launch application
+	 */
 	@Override
 	public void start(Stage s) throws Exception {
 		Constants.read("src/constants.txt");
