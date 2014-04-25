@@ -44,7 +44,8 @@ public class Controller {
 		createWorld();
 		setWorldSteps();
 		createCritters();
-		infoLabel = new Label("");
+		infoLabel = new Label("Hover cursor over a command "
+				+ "\nand watch this space for help");
 		infoLabel.setFont(Font.font("Comic Sans MS",14));
 		infoLabel.setMinHeight(80.0);
 		infoLabel.setMaxHeight(80.0);
@@ -113,21 +114,24 @@ public class Controller {
 		b.setOnMouseExited(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent _){
-				infoLabel.setText("");
+				infoLabel.setText("Hover cursor over a command "
+						+ "\nand watch this space for help");
 			}
 		});
 		
 		t.setOnMouseExited(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent _){
-				infoLabel.setText("");
+				infoLabel.setText("Hover cursor over a command "
+						+ "\nand watch this space for help");
 			}
 		});
 		
 		b2.setOnMouseExited(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent _){
-				infoLabel.setText("");
+				infoLabel.setText("Hover cursor over a command "
+						+ "\nand watch this space for help");
 			}
 		});
 		
@@ -161,6 +165,36 @@ public class Controller {
 				}
 		}));
 		
+		b2.setOnMouseEntered(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				infoLabel.setText("Allows you to change the \nstepping speed "
+						+ "to the number \nof milliseconds specified");
+			}
+		});
+		
+		b2.setOnMouseExited(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				infoLabel.setText("Hover cursor over a command "
+						+ "\nand watch this space for help");
+			}
+		});
+		
+		t.setOnMouseEntered(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				infoLabel.setText("Please specify a number \nbetween 500 and 10,000");
+			}
+		});
+		
+		t.setOnMouseExited(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				infoLabel.setText("Hover cursor over a command "
+						+ "\nand watch this space for help");
+			}
+		});
 		
 		b2.setOnAction(new EventHandler<ActionEvent>(){
 			@Override
@@ -250,7 +284,8 @@ public class Controller {
 		b1.setOnMouseExited(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent _){
-				infoLabel.setText("");
+				infoLabel.setText("Hover cursor over a command "
+						+ "\nand watch this space for help");
 			}
 		});
 	}
@@ -305,7 +340,8 @@ public class Controller {
 		b.setOnMouseExited(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent _){
-				infoLabel.setText("");
+				infoLabel.setText("Hover cursor over a command "
+						+ "\nand watch this space for help");
 			}
 		});
 		
@@ -319,7 +355,8 @@ public class Controller {
 		t1.setOnMouseExited(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent _){
-				infoLabel.setText("");
+				infoLabel.setText("Hover cursor over a command "
+						+ "\nand watch this space for help");
 			}
 		});
 		
@@ -333,7 +370,8 @@ public class Controller {
 		t2.setOnMouseExited(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent _){
-				infoLabel.setText("");
+				infoLabel.setText("Hover cursor over a command "
+						+ "\nand watch this space for help");
 			}
 		});
 	}
@@ -342,13 +380,7 @@ public class Controller {
 		warning = new VBox();
 		warning.setAlignment(Pos.TOP_CENTER);
 		Button ok = new Button("OK");
-		
-		warning.setOnMouseEntered(new EventHandler<MouseEvent>(){
-			@Override
-			public void handle(MouseEvent _){
-				infoLabel.setText("Click OK to dismiss window");
-			}
-		});
+		infoLabel.setText("Click OK to dismiss window");
 		ok.setPrefWidth(75);
 		Label warn = new Label(w);
 		Image img = new Image("file:src/sad_ladybug.png");
@@ -459,6 +491,37 @@ public class Controller {
 			final TextField t1 = new TextField();
 			hexBox.getChildren().addAll(b, t1);
 			
+			b.setOnMouseEntered(new EventHandler<MouseEvent>(){
+				@Override
+				public void handle(MouseEvent _){
+					infoLabel.setText("Loads the critter from\nfile specified below \n and places it "
+							+ "on this \nhex");
+				}
+			});
+			
+			b.setOnMouseExited(new EventHandler<MouseEvent>(){
+				@Override
+				public void handle(MouseEvent _){
+					infoLabel.setText("Hover cursor over a command "
+							+ "\nand watch this space for help");
+				}
+			});
+			
+			t1.setOnMouseEntered(new EventHandler<MouseEvent>(){
+				@Override
+				public void handle(MouseEvent _){
+					infoLabel.setText("Please specify a file");
+				}
+			});
+			
+			t1.setOnMouseExited(new EventHandler<MouseEvent>(){
+				@Override
+				public void handle(MouseEvent _){
+					infoLabel.setText("Hover cursor over a command "
+							+ "\nand watch this space for help");
+				}
+			});
+			
 			b.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 	            public void handle(ActionEvent _) {
@@ -509,12 +572,38 @@ public class Controller {
 		v.getVBox().getChildren().add(hexBox);
 	}
 	
+	void zoomSettings(){
+		HBox zoom = new HBox();
+		Button b1 = new Button("+");
+		Button b2 = new Button("-");
+		b1.setFont(Font.font("Copperplate Gothic Bold", 50));
+		b2.setFont(Font.font("Copperplate Gothic Bold", 50));
+		zoom.getChildren().addAll(b1,b2);
+		v.getVBox().getChildren().remove(zoom);
+		
+		b1.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+            public void handle(ActionEvent _) {
+				cw.zoom(true);
+            }
+        });
+
+		
+		b2.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+            public void handle(ActionEvent _) {
+				cw.zoom(false);
+            }
+        });
+
+		
+	}
 	void removeHexBox(){
 		v.getVBox().getChildren().remove(hexBox);
 		hexBox = new VBox();
 	}
 }//add warnings and conditions with wrong stuff put into text fields. 
-//Also add info for newly created text fields. Consider popups and shit
+//Add popup for Program
 //repositioning the controls? Is the infoLabel helpful enough?
 //make + - buttons
 //
