@@ -300,13 +300,9 @@ public class Controller {
 	
 	void createCritters(){
 		Button b = new Button("Load");
-		final TextField t1 = new TextField();
-		Label l = new Label("Critters from file:");
-		final TextField t2 = new TextField();
-		v.getVBox().getChildren().add(b);
-		v.getVBox().getChildren().add(t1);
-		v.getVBox().getChildren().add(l);
-		v.getVBox().getChildren().add(t2);
+		final TextField t1 = new TextField("type number of critters desired");
+		final TextField t2 = new TextField("type file to load critter from");
+		v.getVBox().getChildren().addAll(b, t1,t2);
 		
 		b.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -316,8 +312,8 @@ public class Controller {
 						for(int i=0;i<Integer.parseInt(t1.getText());i++){
 							cw.addRandomCritter(t2.getText());
 						}
-						t1.setText("");
-						t2.setText("");
+						t1.setText("type number of critters desired");
+						t2.setText("type file to load critter from");
 						critterLabel.setText("Critters Alive: " + cw.critters.size());
 					}
 					else{
@@ -351,6 +347,7 @@ public class Controller {
 			@Override
 			public void handle(MouseEvent _){
 				infoLabel.setText("The number of critters to \ngenerate");
+				t1.setText("");
 			}
 		});
 		
@@ -359,6 +356,7 @@ public class Controller {
 			public void handle(MouseEvent _){
 				infoLabel.setText("Hover cursor over a command "
 						+ "\nand watch this space for help");
+				t1.setText("type number of critters desired");
 			}
 		});
 		
@@ -366,6 +364,7 @@ public class Controller {
 			@Override
 			public void handle(MouseEvent _){
 				infoLabel.setText("the file to generate the \ncritters from");
+				t2.setText("");
 			}
 		});
 		
@@ -374,6 +373,7 @@ public class Controller {
 			public void handle(MouseEvent _){
 				infoLabel.setText("Hover cursor over a command "
 						+ "\nand watch this space for help");
+				t2.setText("type file to load critter from");
 			}
 		});
 	}
@@ -624,6 +624,7 @@ public class Controller {
 			@Override
             public void handle(ActionEvent _) {
 				cw.zoom(v, true);
+				hexSelection();
             }
         });
 
@@ -632,6 +633,7 @@ public class Controller {
 			@Override
             public void handle(ActionEvent _) {
 				cw.zoom(v, false);
+				hexSelection();
             }
         });
 
