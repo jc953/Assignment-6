@@ -36,7 +36,7 @@ public class Critter {
 	 *            the world that this Critter exists in
 	 */
 	public Critter(String file, int direction, int column, int row,
-			CritterWorld critterworld) {
+			CritterWorld critterworld) throws FileNotFoundException{
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					new FileInputStream(file)));
@@ -69,10 +69,8 @@ public class Critter {
 			lastRule = null;
 			matePossible = false;
 			br.close();
-		} catch (FileNotFoundException e) {
-			System.out.println("Error in producing a Critter.");
 		} catch (IOException e) {
-			System.out.println("Error in producing a Critter.");
+			throw new FileNotFoundException();
 		}
 	}
 

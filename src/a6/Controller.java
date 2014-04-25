@@ -1,4 +1,6 @@
 package a6;
+import java.io.FileNotFoundException;
+
 import a5.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -53,6 +55,11 @@ public class Controller {
 		v.getVBox().setMinWidth(200.0);
 		v.getVBox().setMaxWidth(200.0);
 		v.getVBox().getChildren().add(infoLabel);
+		hexSelected = new Label("Hex Selected:");
+		position = new Label("click on desired Hex");
+		v.getVBox().getChildren().add(hexSelected);
+		v.getVBox().getChildren().add(position);
+		clicked = "";
 		hexSelection();
 		zoomSettings();
 		
@@ -310,7 +317,12 @@ public class Controller {
 				try{
 					if(t1.getText()!= null && t2.getText()!= null){
 						for(int i=0;i<Integer.parseInt(t1.getText());i++){
-							cw.addRandomCritter(t2.getText());
+							try{
+								cw.addRandomCritter(t2.getText());
+							}
+							catch (FileNotFoundException fnfe){
+								warning("The file you specified was\nin the wrong format!");
+							}
 						}
 						t1.setText("type number of critters desired");
 						t2.setText("type file to load critter from");
@@ -356,7 +368,7 @@ public class Controller {
 			public void handle(MouseEvent _){
 				infoLabel.setText("Hover cursor over a command "
 						+ "\nand watch this space for help");
-				t1.setText("type number of critters desired");
+				if(t1.getText().equals("")) t1.setText("type number of critters desired");
 			}
 		});
 		
@@ -373,7 +385,7 @@ public class Controller {
 			public void handle(MouseEvent _){
 				infoLabel.setText("Hover cursor over a command "
 						+ "\nand watch this space for help");
-				t2.setText("type file to load critter from");
+				if(t2.getText().equals("")) t2.setText("type file to load critter from");
 			}
 		});
 	}
@@ -407,11 +419,6 @@ public class Controller {
 	}
 	
 	void hexSelection(){
-		hexSelected = new Label("Hex Selected:");
-		position = new Label("click on desired Hex");
-		v.getVBox().getChildren().add(hexSelected);
-		v.getVBox().getChildren().add(position);
-		clicked = "";
 		v.getWorld().setOnMouseExited(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent _){
@@ -486,7 +493,7 @@ public class Controller {
 			hexBox.getChildren().addAll(hexRockInfo, hexFoodInfo, hexCritterInfo);
 			Button b = new Button("You can add one! From\n"
 					+ " from file:");
-			final TextField t1 = new TextField();
+			final TextField t1 = new TextField("");
 			hexBox.getChildren().addAll(b, t1);
 			
 			b.setOnMouseEntered(new EventHandler<MouseEvent>(){
@@ -523,13 +530,18 @@ public class Controller {
 			b.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 	            public void handle(ActionEvent _) {
-					if(t1.getText()!= null){
-					cw.addCritterHere(selected.column, selected.arrRow, t1.getText());
-					t1.setText("");
-					critterLabel.setText("Critters Alive: " + cw.critters.size());
-					cw.update(v);
-					removeHexBox();
-					hexControls();
+					if(!t1.getText().equals("")){
+						try{
+							cw.addCritterHere(selected.column, selected.arrRow, t1.getText());
+							t1.setText("");
+							critterLabel.setText("Critters Alive: " + cw.critters.size());
+							cw.update(v);
+							removeHexBox();
+							hexControls();
+						}
+						catch (FileNotFoundException fnfe){
+							warning("The file you specified \nwas in the wrong format!");
+						}
 					}
 					else{
 						warning("Please Supply Text!");

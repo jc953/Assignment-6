@@ -22,7 +22,7 @@ public class CritterWorld {
 	 * 
 	 * @param file the text file that will be used to create the critter world.
 	 */
-	public CritterWorld(String file){
+	public CritterWorld(String file) throws FileNotFoundException {
 		hexes = new Hex[Constants.MAX_COLUMN][Constants.MAX_ARRAY_ROW];
 		for (int i = 0; i < hexes.length; i++){
 			for (int j = 0; j < hexes[0].length; j++){
@@ -40,14 +40,13 @@ public class CritterWorld {
 				} else if (line.charAt(0)=='c'){
 					createCritter(line);
 				} else {
-					System.out.println("Please enter a file with correct syntax.");
-					throw new RuntimeException();
+					throw new FileNotFoundException();
 				}
 				line = br.readLine();
 			}
 			br.close();
 		} catch (IOException e) {
-			System.out.println("No file found");
+			throw new FileNotFoundException();
 		}
 	}
 	
@@ -107,11 +106,10 @@ public class CritterWorld {
 	 * 
 	 * @param line the text file that will be used to create the critter.
 	 */
-	public void createCritter(String line){
+	public void createCritter(String line) throws FileNotFoundException{
 		String[] str = line.split(" ");
 		if (str.length != 5){
-			System.out.println("Please enter a file with correct syntax.");
-			throw new RuntimeException();
+			throw new FileNotFoundException();
 		}
 		int row = Integer.parseInt(str[2]);
 		int column = Integer.parseInt(str[3]);
@@ -132,7 +130,7 @@ public class CritterWorld {
 	 * 
 	 * @param filename the text file that will be used to create the critter.
 	 */
-	public void addRandomCritter(String filename){
+	public void addRandomCritter(String filename) throws FileNotFoundException{
 		int col = (int)(Math.random() * hexes.length);
 		int row = (int)(Math.random() * hexes[0].length);
 		while (!hexes[col][row].isFree()){
@@ -144,7 +142,7 @@ public class CritterWorld {
 		critters.add(c);
 	}
 	
-	public void addCritterHere(int column, int row, String filename){
+	public void addCritterHere(int column, int row, String filename) throws FileNotFoundException{
 		Critter c = new Critter(filename, (int)Math.random()*6, column, row, this);
 		hexes[column][row].critter = c;
 		critters.add(c);
