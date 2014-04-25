@@ -53,6 +53,7 @@ public class Controller {
 		v.getVBox().setMaxWidth(200.0);
 		v.getVBox().getChildren().add(infoLabel);
 		hexSelection();
+		zoomSettings();
 		
 	}
 	
@@ -579,12 +580,12 @@ public class Controller {
 		b1.setFont(Font.font("Copperplate Gothic Bold", 50));
 		b2.setFont(Font.font("Copperplate Gothic Bold", 50));
 		zoom.getChildren().addAll(b1,b2);
-		v.getVBox().getChildren().remove(zoom);
+		v.getVBox().getChildren().add(zoom);
 		
 		b1.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
             public void handle(ActionEvent _) {
-				cw.zoom(true);
+				cw.zoom(v, true);
             }
         });
 
@@ -592,7 +593,7 @@ public class Controller {
 		b2.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
             public void handle(ActionEvent _) {
-				cw.zoom(false);
+				cw.zoom(v, false);
             }
         });
 

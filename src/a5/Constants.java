@@ -32,6 +32,7 @@ public class Constants {
 	public static int HEX_LENGTH;
 	public static double HEX_APOTHEM;
 	public static int HEX_DIFF;
+	public static int SCROLL_PANE_LENGTH;
 	
 	/**
 	 * Reads the constants from a given file and assigns them to the variables.
@@ -104,6 +105,7 @@ public class Constants {
 			HEX_LENGTH = 30;
 			HEX_APOTHEM = HEX_LENGTH/2*Math.pow(3, 0.5);
 			HEX_DIFF = HEX_LENGTH/10;
+			SCROLL_PANE_LENGTH = 853;
 			br.close();
 		}
 		catch(FileNotFoundException fnfe){

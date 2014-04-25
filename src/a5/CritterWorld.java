@@ -226,4 +226,8 @@ public class CritterWorld {
 	public void update(View v){
 		v.update(this);
 	}
+	
+	public void zoom(View v, boolean b){
+		v.zoom(b);
+	}
 }

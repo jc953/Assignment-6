@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 
 public class View {
 	private Group g;
-	protected final StackPane world;
+	protected StackPane world;
 	private VBox vbox;
 	private ArrayList<HexPolygon> hexes;
 	private int width;
@@ -78,7 +78,7 @@ public class View {
 		world.getChildren().addAll(background, actors, hexesPane);
 		ScrollPane sp = new ScrollPane();
 		sp.setContent(world);
-		sp.setPrefSize(850,850);
+		sp.setPrefSize(Constants.SCROLL_PANE_LENGTH,Constants.SCROLL_PANE_LENGTH);
 		vbox = new VBox();
 		scene.setFill(Color.BLANCHEDALMOND);
 		border.setLeft(sp);
@@ -117,6 +117,48 @@ public class View {
 		}
 	}
 
+	public void zoom(boolean in){
+		if (in && Constants.HEX_LENGTH < 100){
+			Constants.HEX_LENGTH += 10;
+		} else if (!in && Constants.HEX_LENGTH > 10){
+			Constants.HEX_LENGTH -= 10;
+		} else {
+			return;
+		}
+		Constants.HEX_APOTHEM = Constants.HEX_LENGTH/2*Math.pow(3, 0.5);
+		Constants.HEX_DIFF = Constants.HEX_LENGTH/10;
+		hL = Constants.HEX_LENGTH;
+		hA = Constants.HEX_APOTHEM;
+		diff = Constants.HEX_DIFF;
+		world = new StackPane();
+		double width = Constants.MAX_COLUMN*hL*3/2+Constants.MAX_COLUMN*diff + hL/2;
+		double height = Constants.MAX_ARRAY_ROW*hA*2+Constants.MAX_ARRAY_ROW*diff+hA;
+		world.setPrefWidth(width);
+		world.setPrefHeight(height);
+		background = new Polygon(0,0, width, 0, width, height, 0, height);
+		background.setFill(Color.WHITE);
+		hexesPane = new Pane();
+		for(int i = 0; i < Constants.MAX_COLUMN; i++){
+			for (int j = 0; j < Constants.MAX_ARRAY_ROW; j++){
+				int x = i * hL*3/2;
+				double y;
+				if (i%2==0){
+					y = hA + j*hA*2;
+				} else {
+					y = j*hA*2;
+				}
+				HexPolygon p = new HexPolygon(hL/2+x+diff*i, y+diff*j, hL*3/2+x+diff*i, y+diff*j, hL*2+x+diff*i, hA+y+diff*j,
+						hL*3/2+x+diff*i, hA*2+y+diff*j, hL/2+x+diff*i, hA*2+y+diff*j, x+diff*i, hA+y+diff*j, i, Constants.MAX_ARRAY_ROW-j-1, this);
+				p.setCenter(hL+x+diff*i, hA+y+diff*j);
+				hexesPane.getChildren().add(p);
+				hexes.add(p);
+			}
+		}
+		actors = new Pane();
+		world.getChildren().addAll(background, actors, hexesPane);
+		update(cw);
+	}
+	
 	public Group getGroup() {
 		return g;
 	}
