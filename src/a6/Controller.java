@@ -37,6 +37,7 @@ public class Controller {
 	int speed;
 	VBox hexBox;
 	Timeline timeline;
+	StringBuffer sb;
 	public Controller(View v, CritterWorld cw){
 		this.cw = cw;
 		this.v = v;
@@ -460,15 +461,11 @@ public class Controller {
 			selected.setOnMouseClicked(new EventHandler<MouseEvent>(){
 				@Override
 				public void handle(MouseEvent _){
-					selected.setFill(Color.DARKSEAGREEN);
 					selected.setStroke(Color.BLACK);
 					selected = null;
 				}
 			});
 		}
-		
-		//do functionality of typing row,column instead of selecting
-		
 	}
 	
 	void hexControls(){
@@ -560,12 +557,31 @@ public class Controller {
 		for(int i = 8; i < selected.getCritter().mem.length;i++){
 			hexBox.getChildren().add(new Label("mem["+i+"]: "+ selected.getCritter().mem[i]));
 		}
-		StringBuffer sb = new StringBuffer();
+		sb = new StringBuffer();
+		Button b = new Button("Program");
 		selected.getCritter().program.prettyPrint(sb);
-		hexBox.getChildren().addAll(new Label("Program: "),new Label(sb.toString()));
-		sb = new StringBuffer("The last rule performed was \n");
+		b.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+            public void handle(ActionEvent _) {
+				VBox programInfo = new VBox();
+				programInfo.setAlignment(Pos.CENTER);
+				Label program = new Label(sb.toString());
+				programInfo.getChildren().addAll(new Label("This Critter's "
+						+ "Program is:"),program);
+				final Stage s1 = new Stage();
+		        Group g = new Group();
+		        g.getChildren().add(programInfo);
+		        Scene scene = new Scene(g);
+		        s1.setScene(scene);
+		        s1.setWidth(750);
+		        s1.setHeight(930);
+		        s1.show();			
+			}
+        });		
+		hexBox.getChildren().add(b);
+		StringBuffer sb1 = new StringBuffer("The last rule performed was \n");
 		if (selected.getCritter().lastRule != null) {
-			selected.getCritter().lastRule.prettyPrint(sb);
+			selected.getCritter().lastRule.prettyPrint(sb1);
 			hexBox.getChildren().add(new Label(sb.toString()));
 		} else {
 			hexBox.getChildren().add(new Label("This critter has not \nperformed a rule yet."));
@@ -577,10 +593,32 @@ public class Controller {
 		HBox zoom = new HBox();
 		Button b1 = new Button("+");
 		Button b2 = new Button("-");
-		b1.setFont(Font.font("Copperplate Gothic Bold", 50));
-		b2.setFont(Font.font("Copperplate Gothic Bold", 50));
+		b1.setFont(Font.font("Copperplate Gothic Bold", 20));
+		b2.setFont(Font.font("Copperplate Gothic Bold", 20));
 		zoom.getChildren().addAll(b1,b2);
 		v.getVBox().getChildren().add(zoom);
+		
+		zoom.setOnMouseExited(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				infoLabel.setText("Hover cursor over a command "
+						+ "\nand watch this space for help");
+			}
+		});
+		
+		b1.setOnMouseEntered(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				infoLabel.setText("Click to zoom in");
+			}
+		});
+		
+		b2.setOnMouseEntered(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				infoLabel.setText("Click to zoom out");
+			}
+		});
 		
 		b1.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -603,8 +641,4 @@ public class Controller {
 		v.getVBox().getChildren().remove(hexBox);
 		hexBox = new VBox();
 	}
-}//add warnings and conditions with wrong stuff put into text fields. 
-//Add popup for Program
-//repositioning the controls? Is the infoLabel helpful enough?
-//make + - buttons
-//
+}
