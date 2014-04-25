@@ -401,7 +401,6 @@ public class Controller {
 			@Override
 			public void handle(MouseEvent _){
 				infoLabel.setText("The number of critters to \ngenerate");
-				t1.setText("");
 			}
 		});
 		
@@ -416,8 +415,7 @@ public class Controller {
 		t2.setOnMouseEntered(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent _){
-				infoLabel.setText("the file to generate the \ncritters from");
-				t2.setText("");
+				infoLabel.setText("The file to generate the \ncritters from");
 			}
 		});
 		

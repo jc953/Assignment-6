@@ -195,8 +195,6 @@ public class CritterWorld {
 	 * @param c the Critter to be killed.
 	 */
 	public void kill(Critter c){
-		
-		System.out.println("ff");
 		int column = c.column;
 		int row = c.row;
 		critters.remove(c);
