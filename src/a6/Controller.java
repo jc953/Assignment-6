@@ -306,9 +306,10 @@ public class Controller {
 	}
 	
 	void step(){
-    	cw.step();
+		cw.step();
         stepLabel.setText("Steps Advanced: " + cw.steps);
         critterLabel.setText("Critters Alive: " + cw.critters.size());
+		deselect();
 	}
 	
 	void createCritters(){
@@ -479,6 +480,7 @@ public class Controller {
 				}
 			});
 		}
+		cw.update(v);
 	}
 	
 	void hexControls(){
@@ -577,6 +579,7 @@ public class Controller {
 		}
 		sb = new StringBuffer();
 		Button b = new Button("Program");
+		Button b1 = new Button("View Hex Controls");
 		selected.getCritter().program.prettyPrint(sb);
 		b.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -596,7 +599,33 @@ public class Controller {
 		        s1.show();			
 			}
         });		
-		hexBox.getChildren().add(b);
+		
+		b1.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+            public void handle(ActionEvent _) {
+				VBox controls = new VBox();
+				controls.setAlignment(Pos.CENTER);
+				final Stage s1 = new Stage();
+				Button step = new Button("step"), wait = new Button("wait"), move1 = new Button("move forward"), 
+						move2 = new Button("move backward"), turn1 = new Button("turn left"), 
+						turn2 = new Button("turn right"), eat = new Button("eat"), 
+						attack = new Button("attack"), grow = new Button("grow"), 
+						bud = new Button("bud"), mate = new Button("mate");
+		        controlCritters(step, wait, move1, move2, turn1, 
+		        		turn2, eat, attack, grow, bud, mate, s1);
+				controls.getChildren().addAll(new Label("Make this "
+						+ "Critter:"), step, wait, move1, move2, turn1, 
+						turn2, eat, attack, grow, bud, mate);
+		        Group g = new Group();
+		        g.getChildren().add(controls);
+		        Scene scene = new Scene(g);
+		        s1.setScene(scene);
+		        s1.setWidth(200);
+		        s1.setHeight(530);
+		        s1.show();			
+			}
+        });				
+		hexBox.getChildren().addAll(b,b1);
 		StringBuffer sb1 = new StringBuffer("The last rule performed was \n");
 		if (selected.getCritter().lastRule != null) {
 			selected.getCritter().lastRule.prettyPrint(sb1);
@@ -657,8 +686,130 @@ public class Controller {
 
 		
 	}
+	
 	void removeHexBox(){
 		v.getVBox().getChildren().remove(hexBox);
 		hexBox = new VBox();
+	}
+	
+	void controlCritters(Button step,Button wait,Button move1,Button move2,Button turn1, 
+			Button turn2,Button eat,Button attack,Button grow,Button bud,Button mate, Stage s1){
+		final Stage s = s1;
+		step.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+            public void handle(ActionEvent _) {
+				selected.getCritter().step();
+				cw.update(v);
+				s.close();
+            }
+        });
+		
+		wait.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+            public void handle(ActionEvent _) {
+				selected.getCritter().waitTurn();
+				cw.update(v);
+				deselect();
+				s.close();
+            }
+        });
+		
+		move1.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+            public void handle(ActionEvent _) {
+				selected.getCritter().move(1);
+				cw.update(v);
+				deselect();
+				s.close();
+				
+            }
+        });
+		
+		move2.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+            public void handle(ActionEvent _) {
+				selected.getCritter().move(-1);
+				cw.update(v);
+				deselect();
+				s.close();
+            }
+        });
+		
+		turn1.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+            public void handle(ActionEvent _) {
+				selected.getCritter().turn(-1);
+				cw.update(v);
+				deselect();
+				s.close();
+            }
+        });
+		
+		turn2.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+            public void handle(ActionEvent _) {
+				selected.getCritter().turn(1);
+				cw.update(v);
+				deselect();
+				s.close();
+            }
+        });
+		
+		eat.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+            public void handle(ActionEvent _) {
+				selected.getCritter().eat();
+				cw.update(v);
+				deselect();
+				s.close();
+            }
+        });
+		
+		grow.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+            public void handle(ActionEvent _) {
+				selected.getCritter().grow();
+				cw.update(v);
+				deselect();
+				s.close();
+            }
+        });
+		
+		bud.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+            public void handle(ActionEvent _) {
+				selected.getCritter().bud();
+				cw.update(v);
+				deselect();
+				s.close();
+            }
+        });
+		
+		attack.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+            public void handle(ActionEvent _) {
+				selected.getCritter().attack();
+				cw.update(v);
+				deselect();
+				s.close();
+            }
+        });
+		
+		mate.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+            public void handle(ActionEvent _) {
+				selected.getCritter().mate();
+				cw.update(v);
+				deselect();
+				s.close();
+            }
+        });
+	}
+	
+	void deselect(){
+		selected.setStroke(Color.BLACK);
+		clicked = "";
+		selected = null;
+		removeHexBox();
 	}
 }
