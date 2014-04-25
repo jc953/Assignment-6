@@ -1,6 +1,0 @@
-
--selecting a node and pressing step does not update the hex info
-
--let them click on a critter on do a certain action. step, wait, move forward, move backward, eat, turn left, turn right, attack, grow, bud, mate, 
-
--fix last rule

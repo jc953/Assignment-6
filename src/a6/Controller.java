@@ -493,10 +493,7 @@ public class Controller {
 						selected.setStroke(h.getStroke());
 					}
 					if(h.equals(selected)){
-						h.setStroke(Color.BLACK);
-						clicked = "";
-						selected = null;
-						removeHexBox();
+						deselect();
 					}
 					else{
 						selected = h;
