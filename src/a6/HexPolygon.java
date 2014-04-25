@@ -2,11 +2,9 @@ package a6;
 
 import a5.Constants;
 import a5.Critter;
-import javafx.event.EventHandler;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
@@ -25,26 +23,11 @@ public class HexPolygon extends Polygon {
 		this.v = v;
 		setStroke(Color.BLACK);
 		setFill(background);
-		setupEventHandlers();
 	}
 	
 	public void setCenter(double x, double y){
 		this.x = x;
 		this.y = y;
-	}
-	
-	private void setupEventHandlers(){
-		setOnMousePressed(new EventHandler<MouseEvent>(){
-
-			@Override
-			public void handle(MouseEvent e) {
-				System.out.println(column);
-				System.out.println(row);
-				System.out.println(v.getCritterWorld().hexes[column][arrRow].rock);
-				
-			}
-			
-		});
 	}
 	
 	public boolean hasObject(){

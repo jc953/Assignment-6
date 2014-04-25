@@ -34,11 +34,8 @@ public class View {
 	private ScrollPane sp;
 	ArrayList<Program> programs;
 	ArrayList<Double> hues;
-	
-	int temp;
 
 	public View(Stage s, CritterWorld cw) {
-		temp = 0;
 		width = Constants.SCENE_WIDTH;
 		height = Constants.SCENE_HEIGHT;
 		hL = Constants.HEX_LENGTH;
@@ -51,7 +48,6 @@ public class View {
 		s.setScene(scene);
 		s.setWidth(width);
 		s.setHeight(height);
-		hexes = new ArrayList<HexPolygon>();
 		this.cw = cw;
 		BorderPane border = new BorderPane();
 		world = new StackPane();
@@ -62,6 +58,7 @@ public class View {
 		background = new Polygon(0,0, width, 0, width, height, 0, height);
 		background.setFill(Color.WHITE);
 		hexesPane = new Pane();
+		hexes = new ArrayList<HexPolygon>();
 		for(int i = 0; i < Constants.MAX_COLUMN; i++){
 			for (int j = 0; j < Constants.MAX_ARRAY_ROW; j++){
 				int x = i * hL*3/2;
@@ -93,9 +90,9 @@ public class View {
 	
 	public void update(CritterWorld cw){ 
 		this.cw = cw;
-		world.getChildren().remove(actors);
+		world.getChildren().removeAll(actors, hexesPane);
 		actors = new Pane();
-		world.getChildren().add(actors);
+		world.getChildren().addAll(actors, hexesPane);
 		setColors();
 		for (HexPolygon h : hexes){
 			h.reset();
