@@ -192,7 +192,7 @@ public class CritterWorld {
 		int row = c.row;
 		critters.remove(c);
 		hexes[column][row].critter = null;
-		hexes[column][row].food = c.mem[3]*Constants.FOOD_PER_SIZE;
+		hexes[column][row].food += c.mem[3]*Constants.FOOD_PER_SIZE;
 	}
 	
 	/**
