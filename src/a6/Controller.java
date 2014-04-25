@@ -22,6 +22,10 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.text.Font;
 
+/**
+ * The Controller class that handles user input for CritterWorld. Contains 
+ * buttons and information that the user can interact with.
+ */
 public class Controller {
 	Label stepLabel;
 	View v;
@@ -40,6 +44,7 @@ public class Controller {
 	VBox hexBox;
 	Timeline timeline;
 	StringBuffer sb;
+	
 	/**
 	 * Constructor for Controller. 
 	 * This method builds and coordinates the different components

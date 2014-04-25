@@ -144,7 +144,6 @@ public class View {
 				hues.add(Math.random()*2-1);
 			}
 		}
-		System.out.println(programs.size());
 	}
 
 	/**
