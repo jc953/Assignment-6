@@ -142,6 +142,13 @@ public class CritterWorld {
 		critters.add(c);
 	}
 	
+	/**
+	 * Creates a critter using a given text file on a given hex position.
+	 * 
+	 * @param column the column of the critter.
+	 * @param row the row of the critter.
+	 * @param filename the text file that will be used to create the critter.
+	 */
 	public void addCritterHere(int column, int row, String filename) throws FileNotFoundException{
 		Critter c = new Critter(filename, (int)Math.random()*6, column, row, this);
 		hexes[column][row].critter = c;
@@ -223,10 +230,22 @@ public class CritterWorld {
 		}
 	}
 	
+	/**
+	 * Updates the View to show the proper critter world state.
+	 * 
+	 * @param v the View that will be updated.
+	 */
 	public void update(View v){
 		v.update(this);
 	}
 	
+	/**
+	 * Performs a zoom on the view. If b is true, it will zoom in. If b is 
+	 * false, it will zoom out.
+	 * 
+	 * @param v the View that will be zoomed.
+	 * @param b the boolean that determines whether view will be zoomed in or out.
+	 */
 	public void zoom(View v, boolean b){
 		v.zoom(b);
 	}

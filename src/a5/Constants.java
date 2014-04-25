@@ -100,7 +100,7 @@ public class Constants {
 				line = br.readLine();
 			}
 			MAX_ARRAY_ROW = MAX_ROW-MAX_COLUMN/2;
-			SCENE_WIDTH = 1200;
+			SCENE_WIDTH = 1100;
 			SCENE_HEIGHT = 900;
 			HEX_LENGTH = 30;
 			HEX_APOTHEM = HEX_LENGTH/2*Math.pow(3, 0.5);

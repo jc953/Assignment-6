@@ -17,6 +17,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.stage.Stage;
 
+/**
+ * The View of the CritterWorld. Contains two primary pains to portray the world
+ * and for user input. Contains the world in a ScrollPane to allow for large
+ * worlds.
+ */
 public class View {
 	private Group g;
 	protected StackPane world;
@@ -35,6 +40,14 @@ public class View {
 	ArrayList<Program> programs;
 	ArrayList<Double> hues;
 
+	/**
+	 * Initializes the constants of View and sets the stage and CritterWorld. 
+	 * Creates HexPolygons for each hex and adds them to the pane that portrays
+	 * the world.
+	 * 
+	 * @param s the Stage that this will be portrayed on.
+	 * @param cw the CritterWorld that the view is portraying
+	 */
 	public View(Stage s, CritterWorld cw) {
 		width = Constants.SCENE_WIDTH;
 		height = Constants.SCENE_HEIGHT;
@@ -70,7 +83,6 @@ public class View {
 				}
 				HexPolygon p = new HexPolygon(hL/2+x+diff*i, y+diff*j, hL*3/2+x+diff*i, y+diff*j, hL*2+x+diff*i, hA+y+diff*j,
 						hL*3/2+x+diff*i, hA*2+y+diff*j, hL/2+x+diff*i, hA*2+y+diff*j, x+diff*i, hA+y+diff*j, i, Constants.MAX_ARRAY_ROW-j-1, this);
-				p.setCenter(hL+x+diff*i, hA+y+diff*j);
 				hexesPane.getChildren().add(p);
 				hexes.add(p);
 			}
@@ -81,15 +93,27 @@ public class View {
 		sp.setContent(world);
 		sp.setPrefSize(Constants.SCROLL_PANE_LENGTH,Constants.SCROLL_PANE_LENGTH);
 		vbox = new VBox();
-		scene.setFill(Color.BLANCHEDALMOND);
+		scene.setFill(Color.color(.8,.4,.4));
 		border.setLeft(sp);
 		border.setRight(vbox);
 		g.getChildren().add(border);
 		update(cw);
 	}
 	
+	/**
+	 * Updates the View based on the CritterWorld. If the CritterWorld changes,
+	 * as in a new world is loaded, it will reset programs and hues to reduce
+	 * memory use. Removes the current actors from the world pane and creates 
+	 * new ones by going through each and getting the ImageView from them. 
+	 * 
+	 * @param cw the CritterWorld that this is portraying
+	 */
 	public void update(CritterWorld cw){ 
-		this.cw = cw;
+		if (!this.cw.equals(cw)){
+			programs = new ArrayList<Program>();
+			hues = new ArrayList<Double>();
+			this.cw=cw;
+		}
 		world.getChildren().removeAll(actors, hexesPane);
 		actors = new Pane();
 		world.getChildren().addAll(actors, hexesPane);
@@ -102,6 +126,10 @@ public class View {
 		}
 	}
 	
+	/**
+	 * Sets the colors that will be used by the critters to determine different
+	 * species.
+	 */
 	public void setColors(){
 		for (Critter c : cw.critters){
 			boolean exists = false;
@@ -116,8 +144,15 @@ public class View {
 				hues.add(Math.random()*2-1);
 			}
 		}
+		System.out.println(programs.size());
 	}
 
+	/**
+	 * Zooms in or out of the world pane. Has a cap as to how much it can zoom
+	 * in or out.
+	 * 
+	 * @param in true if it zooms in, false if it zooms out.
+	 */
 	public void zoom(boolean in){
 		if (in && Constants.HEX_LENGTH < 100){
 			Constants.HEX_LENGTH += 10;
@@ -151,7 +186,6 @@ public class View {
 				}
 				HexPolygon p = new HexPolygon(hL/2+x+diff*i, y+diff*j, hL*3/2+x+diff*i, y+diff*j, hL*2+x+diff*i, hA+y+diff*j,
 						hL*3/2+x+diff*i, hA*2+y+diff*j, hL/2+x+diff*i, hA*2+y+diff*j, x+diff*i, hA+y+diff*j, i, Constants.MAX_ARRAY_ROW-j-1, this);
-				p.setCenter(hL+x+diff*i, hA+y+diff*j);
 				hexesPane.getChildren().add(p);
 				hexes.add(p);
 			}
@@ -160,23 +194,39 @@ public class View {
 		world.getChildren().addAll(background, actors, hexesPane);
 		update(cw);
 	}
-	
-	public Group getGroup() {
-		return g;
-	}
 
+	/**
+	 * Returns the vbox of this View.
+	 * 
+	 * @return vbox of View
+	 */
 	public VBox getVBox() {
 		return vbox;
 	}
 	
+	/**
+	 * Returns the CritterWorld of this View.
+	 * 
+	 * @return CritterWorld of View
+	 */
 	public CritterWorld getCritterWorld(){
 		return cw;
 	}
 	
+	/**
+	 * Returns the hex polygons of this view.
+	 * 
+	 * @return hex polygons of View
+	 */
 	public ArrayList<HexPolygon> getHexes(){
 		return hexes;
 	}
 	
+	/**
+	 * Returns the world pane of this view.
+	 * 
+	 * @return world pane of View
+	 */
 	public Pane getWorld(){
 		return world;
 	}
