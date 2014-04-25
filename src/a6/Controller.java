@@ -87,10 +87,16 @@ public class Controller {
 			@Override
             public void handle(ActionEvent _) {
 				if(!t.getText().equals("")){
-					cw = new CritterWorld(t.getText());
-					t.setText("");
-			        stepLabel.setText("Steps Advanced: " + cw.steps);
-					critterLabel.setText("Critters Alive: " + cw.critters.size());
+					try{
+						cw = new CritterWorld(t.getText());
+						t.setText("");
+				        stepLabel.setText("Steps Advanced: " + cw.steps);
+						critterLabel.setText("Critters Alive: " + cw.critters.size());
+					}
+					catch (FileNotFoundException fnfe){
+						warning("The file you specified \nwas in the wrong format!");
+					}
+
 				}
 				else{
 					warning("Please supply text!");
