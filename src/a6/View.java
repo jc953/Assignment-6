@@ -165,7 +165,7 @@ public class View {
 		return g;
 	}
 
-	public Pane getVBox() {
+	public VBox getVBox() {
 		return vbox;
 	}
 	

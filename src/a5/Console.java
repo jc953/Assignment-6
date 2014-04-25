@@ -1,5 +1,6 @@
 package a5;
 
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /** The console user interface for Assignment 5. */
@@ -8,7 +9,7 @@ public class Console {
 	private static boolean done;
 	CritterWorld cw;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws FileNotFoundException {
 		Console console = new Console();
 		Constants.read("src/constants.txt");
 
@@ -20,8 +21,9 @@ public class Console {
 
 	/**
 	 * Processes a single console command provided by the user.
+	 * @throws FileNotFoundException 
 	 */
-	void handleCommand() {
+	void handleCommand() throws FileNotFoundException {
 		String command = scan.next();
 
 		if (command.equals("new")) {
@@ -69,8 +71,9 @@ public class Console {
 	 * Starts new simulation with world specified in filename
 	 * 
 	 * @param filename
+	 * @throws FileNotFoundException 
 	 */
-	private void loadWorld(String filename) {
+	private void loadWorld(String filename) throws FileNotFoundException {
 		cw = new CritterWorld(filename);
 	}
 
@@ -80,8 +83,9 @@ public class Console {
 	 * 
 	 * @param filename
 	 * @param n
+	 * @throws FileNotFoundException 
 	 */
-	private void loadCritters(String filename, int n) {
+	private void loadCritters(String filename, int n) throws FileNotFoundException {
 		for (int i = 0; i < n; i++) {
 			cw.addRandomCritter(filename);
 		}

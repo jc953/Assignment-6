@@ -43,10 +43,8 @@ public class Controller {
 	public Controller(View v, CritterWorld cw){
 		this.cw = cw;
 		this.v = v;
+		v.getVBox().setSpacing(5.0);
 		speed = 1000;
-		createWorld();
-		setWorldSteps();
-		createCritters();
 		infoLabel = new Label("Hover cursor over a command "
 				+ "\nand watch this space for help");
 		infoLabel.setFont(Font.font("Comic Sans MS",14));
@@ -55,23 +53,29 @@ public class Controller {
 		v.getVBox().setMinWidth(200.0);
 		v.getVBox().setMaxWidth(200.0);
 		v.getVBox().getChildren().add(infoLabel);
+		createWorld();
+		setWorldSteps();
+		createCritters();
+		zoomSettings();
 		hexSelected = new Label("Hex Selected:");
 		position = new Label("click on desired Hex");
 		v.getVBox().getChildren().add(hexSelected);
 		v.getVBox().getChildren().add(position);
 		clicked = "";
 		hexSelection();
-		zoomSettings();
+		
 		
 	}
 	
 	void createWorld(){
+		stepLabel = new Label("Steps Advanced: 0");
+		stepLabel.setFont(Font.font("Copperplate Gothic Bold",14));
+		critterLabel = new Label("Critters Alive: 0");
+		critterLabel.setFont(Font.font("Copperplate Gothic Bold", 14));
 		Button b = new Button("Load World");
 		final TextField t = new TextField("");
 		Button b2 = new Button("Load Random World");
-		v.getVBox().getChildren().add(b);
-		v.getVBox().getChildren().add(t);
-		v.getVBox().getChildren().add(b2);
+		v.getVBox().getChildren().addAll(stepLabel, critterLabel,b,t,b2);
 		
 		b2.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -157,16 +161,12 @@ public class Controller {
 		Button b = new Button("Step Once");
 		final Button b1 = new Button("Step Continuously");
 		final HBox speedControls = new HBox();
-		stepLabel = new Label("Steps Advanced: 0");
-		stepLabel.setFont(Font.font("Copperplate Gothic Bold",14));
-		critterLabel = new Label("Critters Alive: 0");
-		critterLabel.setFont(Font.font("Copperplate Gothic Bold", 14));
 		final Button b2 = new Button("Set step speed to: ");
 		final TextField t = new TextField();
 		t.setMaxWidth(50.0); 
 		t.setMinWidth(50.0);
 		speedControls.getChildren().addAll(b2, t);
-		v.getVBox().getChildren().addAll(b, b1, speedControls, stepLabel, critterLabel);
+		v.getVBox().getChildren().addAll(b, b1, speedControls);
 		
 		timeline = new Timeline(new KeyFrame(Duration.millis(speed), 
 				new EventHandler<ActionEvent>(){
@@ -199,7 +199,7 @@ public class Controller {
 		t.setOnMouseEntered(new EventHandler<MouseEvent>(){
 			@Override
 			public void handle(MouseEvent _){
-				infoLabel.setText("Please specify a number \nbetween 500 and 10,000");
+				infoLabel.setText("Please specify a number \nbetween 50 and 10,000 \n(milliseconds)");
 			}
 		});
 		
@@ -217,6 +217,14 @@ public class Controller {
 				try{
 					if(t.getText()!= null){
 						speed = Integer.parseInt(t.getText());
+						if(speed<50) {
+							speed = 50; 
+							warning("That is too fast,speed \nhas been set to 50! ");
+						}
+						if(speed>10000) {
+							speed = 10000; 
+							warning("That is too slow,speed \nhas been set to 10,000! ");
+						}
 						t.setText("");
 						timeline = new Timeline(new KeyFrame(Duration.millis(speed), 
 								new EventHandler<ActionEvent>(){
@@ -290,8 +298,8 @@ public class Controller {
 					infoLabel.setText("Stops automatic advancement");
 				}
 				else{
-					infoLabel.setText("Advances the world \ncontinuously at a rate"
-							+ " of \none step per second");
+					infoLabel.setText("Advances the world \ncontinuously at rate defined"
+							+ " or \nby default, one step per second");
 				}
 			}
 		});
@@ -314,7 +322,7 @@ public class Controller {
 	
 	void createCritters(){
 		Button b = new Button("Load");
-		final TextField t1 = new TextField("type number of critters desired");
+		final TextField t1 = new TextField("number of critters desired");
 		final TextField t2 = new TextField("type file to load critter from");
 		v.getVBox().getChildren().addAll(b, t1,t2);
 		
@@ -594,8 +602,8 @@ public class Controller {
 		        g.getChildren().add(programInfo);
 		        Scene scene = new Scene(g);
 		        s1.setScene(scene);
-		        s1.setWidth(750);
-		        s1.setHeight(930);
+		        s1.setWidth(300);
+		        s1.setHeight(500);
 		        s1.show();			
 			}
         });		
@@ -610,12 +618,13 @@ public class Controller {
 						move2 = new Button("move backward"), turn1 = new Button("turn left"), 
 						turn2 = new Button("turn right"), eat = new Button("eat"), 
 						attack = new Button("attack"), grow = new Button("grow"), 
-						bud = new Button("bud"), mate = new Button("mate");
+						bud = new Button("bud"), mate = new Button("mate"), serve = new Button("serve");
+				TextField serveAmount = new TextField("Enter amount to serve");
 		        controlCritters(step, wait, move1, move2, turn1, 
-		        		turn2, eat, attack, grow, bud, mate, s1);
+		        		turn2, eat, attack, grow, bud, mate, serve, serveAmount, s1);
 				controls.getChildren().addAll(new Label("Make this "
 						+ "Critter:"), step, wait, move1, move2, turn1, 
-						turn2, eat, attack, grow, bud, mate);
+						turn2, eat, attack, grow, bud, mate, serve, serveAmount);
 		        Group g = new Group();
 		        g.getChildren().add(controls);
 		        Scene scene = new Scene(g);
@@ -624,8 +633,7 @@ public class Controller {
 		        s1.setHeight(530);
 		        s1.show();			
 			}
-        });				
-		hexBox.getChildren().addAll(b,b1);
+        });
 		StringBuffer sb1 = new StringBuffer("The last rule performed was \n");
 		if (selected.getCritter().lastRule != null) {
 			selected.getCritter().lastRule.prettyPrint(sb1);
@@ -633,16 +641,18 @@ public class Controller {
 		} else {
 			hexBox.getChildren().add(new Label("This critter has not \nperformed a rule yet."));
 		}
+		hexBox.getChildren().addAll(b,b1);
 		v.getVBox().getChildren().add(hexBox);
 	}
 	
 	void zoomSettings(){
 		HBox zoom = new HBox();
+		Label l = new Label("Zoom options: ");
 		Button b1 = new Button("+");
 		Button b2 = new Button("-");
 		b1.setFont(Font.font("Copperplate Gothic Bold", 20));
 		b2.setFont(Font.font("Copperplate Gothic Bold", 20));
-		zoom.getChildren().addAll(b1,b2);
+		zoom.getChildren().addAll(l,b1,b2);
 		v.getVBox().getChildren().add(zoom);
 		
 		zoom.setOnMouseExited(new EventHandler<MouseEvent>(){
@@ -693,8 +703,10 @@ public class Controller {
 	}
 	
 	void controlCritters(Button step,Button wait,Button move1,Button move2,Button turn1, 
-			Button turn2,Button eat,Button attack,Button grow,Button bud,Button mate, Stage s1){
+			Button turn2,Button eat,Button attack,Button grow,Button bud,Button mate, Button serve
+			, TextField serveA, Stage s1){
 		final Stage s = s1;
+		final TextField serveAmount = serveA; 
 		step.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
             public void handle(ActionEvent _) {
@@ -807,20 +819,40 @@ public class Controller {
             }
         });
 		
-		mate.setOnAction(new EventHandler<ActionEvent>() {
+		serve.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
             public void handle(ActionEvent _) {
-				selected.getCritter().mate();
-				int[] pos = selected.getCritter().getAdjacentPositions(selected.column,selected.row);
-				if(cw.hexes[pos[0]][pos[1]].critter != null) cw.hexes[pos[0]][pos[1]].critter.mate();
-				cw.update(v);
-				deselect();
-				s.close();
+				try{
+					selected.getCritter().serve(Integer.parseInt(serveAmount.getText()));
+					cw.update(v);
+					deselect();
+					s.close();
+				}
+				catch (NumberFormatException nfe){
+					warning("Please enter a number \nin the correct format!");
+				}
             }
         });
+		
+		serveAmount.setOnMouseEntered(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				serveAmount.setText("");
+			}
+		});
+		
+		serveAmount.setOnMouseExited(new EventHandler<MouseEvent>(){
+			@Override
+			public void handle(MouseEvent _){
+				if(serveAmount.getText().equals("")){
+					serveAmount.setText("Enter amount to serve");
+				}
+			}
+		});
 	}
 	
 	void deselect(){
+		if(selected == null) return;
 		selected.setStroke(Color.BLACK);
 		clicked = "";
 		selected = null;
