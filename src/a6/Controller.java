@@ -629,7 +629,7 @@ public class Controller {
 		StringBuffer sb1 = new StringBuffer("The last rule performed was \n");
 		if (selected.getCritter().lastRule != null) {
 			selected.getCritter().lastRule.prettyPrint(sb1);
-			hexBox.getChildren().add(new Label(sb.toString()));
+			hexBox.getChildren().add(new Label(sb1.toString()));
 		} else {
 			hexBox.getChildren().add(new Label("This critter has not \nperformed a rule yet."));
 		}
@@ -799,6 +799,20 @@ public class Controller {
 			@Override
             public void handle(ActionEvent _) {
 				selected.getCritter().mate();
+				int[] pos = selected.getCritter().getAdjacentPositions(selected.column,selected.row);
+				if(cw.hexes[pos[0]][pos[1]].critter != null) cw.hexes[pos[0]][pos[1]].critter.mate();
+				cw.update(v);
+				deselect();
+				s.close();
+            }
+        });
+		
+		mate.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+            public void handle(ActionEvent _) {
+				selected.getCritter().mate();
+				int[] pos = selected.getCritter().getAdjacentPositions(selected.column,selected.row);
+				if(cw.hexes[pos[0]][pos[1]].critter != null) cw.hexes[pos[0]][pos[1]].critter.mate();
 				cw.update(v);
 				deselect();
 				s.close();
