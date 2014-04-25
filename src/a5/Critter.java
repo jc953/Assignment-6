@@ -463,10 +463,9 @@ public class Critter {
 	public void grow() {
 		if (mem[3] * getComplexity() * Constants.GROW_COST >= mem[4]) {
 			critterworld.kill(this);
-			return;
 		} else {
-			mem[3]++;
 			mem[4] -= mem[3] * getComplexity() * Constants.GROW_COST;
+			mem[3]++;
 		}
 	}
 
