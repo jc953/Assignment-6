@@ -150,7 +150,7 @@ public class CritterWorld {
 	 * @param filename the text file that will be used to create the critter.
 	 */
 	public void addCritterHere(int column, int row, String filename) throws FileNotFoundException{
-		Critter c = new Critter(filename, (int)Math.random()*6, column, row, this);
+		Critter c = new Critter(filename, (int)(Math.random()*6), column, row, this);
 		hexes[column][row].critter = c;
 		critters.add(c);
 	}

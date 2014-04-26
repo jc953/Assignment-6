@@ -356,15 +356,16 @@ public class Controller {
 		b.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
             public void handle(ActionEvent _) {
+				if (cw == null) warning("You must load a world first!");
 				try{
 					if(t1.getText()!= null && t2.getText()!= null){
-						for(int i=0;i<Integer.parseInt(t1.getText());i++){
-							try{
+						try{
+							for(int i=0;i<Integer.parseInt(t1.getText());i++){
 								cw.addRandomCritter(t2.getText());
 							}
-							catch (FileNotFoundException fnfe){
-								warning("The file you specified was\nin the wrong format!");
-							}
+						}
+						catch (FileNotFoundException fnfe){
+							warning("The file you specified was\nin the wrong format!");
 						}
 						t1.setText("");
 						t2.setText("");
